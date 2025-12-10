@@ -1,13 +1,26 @@
 <template>
     <div class="mt-4 border-b pb-5">
-        <p class="opacity-90">{{ comment.user.firstname }} {{ comment.user.lastname }} </p> 
+        <p class="opacity-90 relative">
+            {{ comment.user.firstname }} {{ comment.user.lastname }} 
+            <span 
+                v-if="recipe?.user_id === comment?.user.id"
+                class="text-green-500 text-sm font-semibold -mt left-[95px] absolute">
+                Raddisher
+            </span>
+        </p> 
         <span class="text-sm text-slate-500">{{ formattedDate(comment.created_at) }}</span>
         <div class="pt-1">
             {{ comment.message }}
         </div>
         <div class="flex justify-between items-center mt-3">
-            <div class="px-3 py-1 border border-gray-300 text-gray-500 text-sm cursor-pointer">
-                Reply <span class="text-black opacity-60">0</span>
+            <div
+                v-if="!comment.parent_id"
+                @click="toggleReplies()" 
+                class="px-3 py-1 border border-gray-300 text-gray-500 text-sm cursor-pointer">
+                {{ (comment.replies?.length > 1) ? 'Replies' : 'Reply' }}
+                 <span class="text-black opacity-60">
+                    {{ comment.replies ? comment.replies.length : '0' }}
+                </span>
             </div>
             <div class="flex gap-1">
                 <button class="flex items-center gap-1 px-3 py-1 border border-gray-300">
@@ -25,33 +38,42 @@
             </div>
         </div>
     </div>
-    <!-- Replies -->
-     <div v-if="comment.replies && comment.replies.length > 0" class="bg-[#eee]">
-        <ul class="border-b">
-            <li 
-                class="pt-3 relative pr-3"
-                v-for="reply in comment.replies" :key="reply.id"
-            >
-                <Icon 
-                    icon="radix-icons:corner-bottom-left" width="13" height="13" 
-                    class="absolute left-3 top-6"
-                />
-                <div class="ms-8">
-                    <CommentItem 
-                        :comment="reply"
+
+    <div v-if="commentReplies">
+        <!-- Replies -->
+        <div v-if="comment.replies && comment.replies.length > 0" class="bg-[#eee]">
+            <ul class="border-b">
+                <li 
+                    class="pt-3 relative pr-3"
+                    v-for="reply in comment.replies" :key="reply.id"
+                >
+                    <Icon 
+                        icon="radix-icons:corner-bottom-left" width="13" height="13" 
+                        class="absolute left-3 top-6"
                     />
-                </div>
-            </li>
-        </ul>
+                    <div class="ms-8">
+                        <CommentItem 
+                            :comment="reply"
+                            :recipe="recipe"
+                        />
+                    </div>
+                </li>
+            </ul>
+        
+        </div>
         <!-- Reply Form -->
-        <div class="py-6 border-b ">
+        <div
+            v-if="comment.replies" 
+            class="py-6 border-b bg-[#eee]"
+        >
             <div class="relative">            
                 <Icon 
                     icon="radix-icons:corner-bottom-left" width="13" height="13" 
                     class="absolute left-3"
                 />
-                <div class="ms-8 mr-3 bg-white opacity-70">
+                <div class="ms-8 mr-3 bg-white">
                     <CommentForm
+                        @comment-added="$emit('comment-added', $event)"
                         :isLoggedIn="isLoggedIn"
                         :commentId="comment.id"
                     />    
@@ -59,10 +81,14 @@
             </div>
         </div>
 
-        <div class="flex justify-center p-3 border-b-2 text-gray-500 font-bold cursor-pointer">
+        <div
+            @click="showLess()" 
+            class="flex justify-center p-3 border-b-2 text-gray-500 font-bold cursor-pointer bg-[#eee]"
+        >
             Show Less
         </div>
-     </div>
+    </div>
+    
     
 </template>
 
@@ -70,6 +96,7 @@
 import CommentForm from './CommentForm.vue';
     export default {
         name: 'CommentItem',
+        emits: ['comment-added'],
         components: {
             CommentForm
         },
@@ -78,9 +105,18 @@ import CommentForm from './CommentForm.vue';
                 type: Object,
                 required: true,
             },
+            recipe: {
+                type: Object,
+                required: true,
+            },
             isLoggedIn: {
                 type: Boolean,
                 default: false,
+            }
+        },
+        data (){
+            return {
+                commentReplies: false,
             }
         },
         methods: {
@@ -98,6 +134,12 @@ import CommentForm from './CommentForm.vue';
                 
                 return formattedDate;
             },
+           toggleReplies() {
+                this.commentReplies = !this.commentReplies;
+           },
+           showLess() {
+                this.commentReplies = false;
+           }
         }
     }
 </script>

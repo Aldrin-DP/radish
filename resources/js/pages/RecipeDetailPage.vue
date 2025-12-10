@@ -54,7 +54,25 @@ export default {
                 }
             },
             handleCommentAdded(newComment) {
-                this.comments.unshift(newComment);
+                console.log('New comment received:', newComment);
+                console.log('Has parent_id?', newComment.parent_id);
+
+                if (newComment.parent_id){
+                      console.log('Looking for parent:', newComment.parent_id)
+                    const parentComment = this.comments.find(c => c.id === newComment.parent_id);
+                     console.log('Found parent?', parentComment);
+                    if (parentComment){
+                        if (!parentComment.replies){
+                            parentComment.replies = [];
+                        }
+                        parentComment.replies.push(newComment);
+                                    console.log('Parent after push:', parentComment.replies);
+
+                    }
+                   
+                } else {
+                    this.comments.unshift(newComment);
+                }
             }
         },
         mounted() {

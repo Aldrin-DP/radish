@@ -24,9 +24,9 @@
 
         <div class="mt-5">
             <h2 class="font-semibold text-xl opacity-90">
-                COMMENTS {{ comments ? comments.length : '' }}
-                <span class="text-lg text-gray-500 font-normal opacity-100">
-                    <!-- {{ comments.length }} -->
+                COMMENTS  <span class="text-gray-500 text-base font-normal "></span> 
+                <span class="text-base  text-gray-500 font-normal opacity-100">
+                    {{ commentsCount }}
                 </span>
             </h2>
 
@@ -53,7 +53,9 @@
             <CommentItem 
                 v-if="!comment.parent_id"
                 :comment="comment"
+                :recipe="recipe"
                 :isLoggedIn="isLoggedIn"
+                @comment-added="$emit('comment-added', $event)"
             />
         </div>
         
@@ -68,6 +70,12 @@ import CommentItem from './CommentItem.vue';
         components: {
             CommentForm,
             CommentItem
+        },
+        computed: {
+            commentsCount() {
+                const count = this.comments.filter((comment) => comment.parent_id !== null );
+                return count.length;
+            }
         },
         props: {
             comments: {

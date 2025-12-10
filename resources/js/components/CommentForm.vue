@@ -1,6 +1,6 @@
 <template>
     <span class="text-red-400"> {{ errors.message }} </span>
-    <div class="border border-gray-300 p-3">
+    <div class="border border-gray-300 p-3 bg-white opacity-70">
         <form @submit.prevent="addComment">
             <textarea 
                 name="" 
@@ -77,7 +77,8 @@ import { useToast } from 'vue-toastification';
                 if (Object.keys(this.errors).length === 0){
                     this.isSubmitting = true;
                     try {
-                        const response = await axios.post(`/api/recipes/${this.$route.params.id}/comments`, { 
+                        const recipeId = this.$route.params.id;
+                        const response = await axios.post(`/api/recipes/${recipeId}/comments`, { 
                             message: this.message,
                             parent_id: this.commentId
                         });

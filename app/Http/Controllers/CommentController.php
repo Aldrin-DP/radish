@@ -10,15 +10,14 @@ use App\Http\Requests\StoreCommentRequest;
 class CommentController extends Controller
 {
     public function store(StoreCommentRequest $request, $recipeId) {
-        
+
         try {
             $validated = $request->validated();
-
             $comment = Comment::create([
                 'user_id' => auth()->id(),
                 'recipe_id' => $recipeId,
                 'message' => $validated['message'],
-                'parent_id' => $request->validated['parent_id'] ?? null
+                'parent_id' => $validated['parent_id'] ?? null
             ]);
             $comment->load('user');
             
