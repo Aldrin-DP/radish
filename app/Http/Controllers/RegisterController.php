@@ -17,6 +17,8 @@ class RegisterController extends Controller
             
             $user = User::create($validated);
 
+            $token = $user->createToken('auth_token')->plainTextToken;
+
             return response()->json([
                 'message' => 'Registration successful',
                 'user' => [
@@ -24,7 +26,8 @@ class RegisterController extends Controller
                     'firstname' => $user->firstname,
                     'lastname' => $user->lastname,
                     'email' => $user->email
-                ]
+                ],
+                'token' => $token
             ], 201);
 
         } catch (\Exception $e) {

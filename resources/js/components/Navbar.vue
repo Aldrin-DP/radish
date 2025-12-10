@@ -22,22 +22,22 @@
                 </div>
 
                 <div class="hidden md:block">
-                        <router-link
-                            to="/login"
-                            class="border border-gray-300 px-3 py-1 rounded-full hover:bg-[#5FB15F] hover:text-white hover:border-[#5FB15F] transition-colors duration-300"
-                        >
-                            Log in
-                        </router-link>
-                        <form action="" method="POST">
-                            
-                            <button 
-                                type="submit"
-                                class="border border-gray-300 px-3 py-1 rounded-full hover:bg-[#E94E63] hover:text-white hover:border-[#E94E63] transition-colors duration-300"
-                            >
-                                Log out
-                            </button>
-                        </form>
-                   
+                    <router-link
+                        to="/login"
+                        v-if="!isLoggedIn"
+                        class="border border-gray-300 px-3 py-1 rounded-full hover:bg-[#5FB15F] hover:text-white hover:border-[#5FB15F] transition-colors duration-300"
+                    >
+                        Log in
+                    </router-link>
+
+                    <button 
+                        @click.prevent="handleLogout"
+                        v-if="isLoggedIn"
+                        type="submit"
+                        class="border mb-2 border-gray-300 px-3 py-1 rounded-full hover:bg-[#E94E63] hover:text-white hover:border-[#E94E63] transition-colors duration-300"
+                    >
+                        Log out
+                    </button>
                 </div>
             </div>
         </div>
@@ -52,7 +52,9 @@
                         alt="Profile photo"
                         width="40px"
                     >
-                    <p></p>
+                    <p v-if="isLoggedIn">
+                        {{ user.firstname }} {{ user.lastname }}
+                    </p>
                 </div>
                 <div class="flex gap-1 items-center md:hidden">
                     <p>Recipes: 4</p>
@@ -65,23 +67,32 @@
                 :class="{ 'hidden': !open, 'block': open }"
             >
                 <ul class="cursor-pointer border md:flex md:border-none">
-                    <li class="hover:text-white transition-all duration-300">
-                        <a  class="px-4 py-1 flex"
-                            href="">
+                    <li class="nav-link" active-class="active">
+                        <router-link 
+                            to="/" 
+                            active-class="active"
+                            class="px-4 py-1 flex hover:text-white transition-all duration-300 nav-link">
                             Home
-                        </a>                
+                        </router-link>                
                     </li>
-                   
-                        <li class="  hover:text-white transition-all duration-300">
-                            <a 
-                                class="px-4 py-1 flex"
-                                href="">
-                                My Recipes 
                                 
-                            </a>
-                        </li>
+                    <li 
+                        v-if="isLoggedIn"
+                        class="hover:text-white transition-all duration-300 nav-link"
+                        active-class="active"
+                    >
+                        <a 
+                            class="px-4 py-1 flex"
+                            href="">
+                            My Recipes 
+                            
+                        </a>
+                    </li>
                     
-                    <li class="  hover:text-white transition-all duration-300">
+                    <li 
+                        v-if="isLoggedIn"
+                        class="hover:text-white transition-all duration-300"
+                    >
                         <a 
                             class="px-4 py-1 flex"
                             href="">
@@ -90,18 +101,20 @@
                     </li>                
                     <li class="px-4 py-1 hover:bg-[#7dc97d] md:hidden">
                         
-                            <a href="" 
-                            class="md:border border-gray-300 md:px-3 md:py-1 md:rounded-full">
-                                Log in
-                            </a>    
-                       
-                            <form action="" method="POST">
-                                @csrf
-                                <button type="submit" class="">
-                                    Log out
-                                </button>
-                            </form>
-                        
+                        <router-link 
+                            to="/login"
+                            v-if="!isLoggedIn"
+                            class="md:border border-gray-300 md:px-3 md:py-1 md:rounded-full"
+                        >
+                            Log in
+                        </router-link> 
+                    
+                        <button 
+                            v-if="isLoggedIn"
+                            @click.prevent="handleLogout" type="submit" class="">
+                                Log out
+                        </button>
+
                     </li>
                 </ul>
             </div>
@@ -112,8 +125,31 @@
 
 <script>
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
+import { useToast } from 'vue-toastification';
 
 export default {
-    components: { Bars3Icon, XMarkIcon }
+    components: { Bars3Icon, XMarkIcon },
+    props: [
+        'user',
+        'isLoggedIn'
+    ],
+    methods: {
+        async handleLogout() {
+            try {
+                const response = await axios.post('/api/logout');
+                // remove token
+                localStorage.removeItem('auth_token');
+                this.$emit('userLoggedOut');
+                this.$router.push('/login');
+                
+            } catch (error){
+                console.error('Logout error', error);
+                this.toast.error('Error logging out. Please try again');
+            }  
+        }
+    },
+    created() {
+        this.toast = useToast();
+    }
 }
 </script>

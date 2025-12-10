@@ -6,3 +6,6 @@ body {
   background-color: #f6f6f6;
   font-family: 'Figtree', sans-serif;
 }
+.nav-link.active {
+  background-color: #5FB15F;
+}

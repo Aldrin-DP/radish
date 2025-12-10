@@ -10,7 +10,7 @@
             </div>
             <div class="w-3/6 p-3">
                 <h2 class="">Create an account</h2>
-                <form @submit.prevent="handleRegister()">
+                <form @submit.prevent="handleRegister">
                     <div class="p-3">
                         <div class="mb-1">
                             <label for="" class="text-sm" >First name</label>
@@ -24,7 +24,7 @@
                                 v-if="errors.firstname" 
                                 class="text-red-500 text-sm mb-1"
                             >
-                                {{ errors.firstname[0] }}
+                                {{ Array.isArray(errors.firstname) ? errors.firstname[0] : errors.firstname }}
                             </div>
                         </div>
                         
@@ -40,7 +40,7 @@
                                 v-if="errors.lastname" 
                                 class="text-red-500 text-sm mb-1"
                             >
-                                {{ errors.lastname[0] }}
+                                {{ Array.isArray(errors.lastname) ? errors.lastname[0] : errors.lastname }}
                             </div>
                         </div>
 
@@ -56,7 +56,7 @@
                                 v-if="errors.email && errors.email.length" 
                                 class="text-red-500 text-sm mb-1"
                             >
-                                {{ errors.email[0] }}
+                                {{ Array.isArray(errors.email) ? errors.email[0] : errors.email }}
                             </div>
                         </div>
 
@@ -72,19 +72,24 @@
                                 v-if="errors.password" 
                                 class="text-red-500 text-sm mb-1"
                             >
-                                {{ errors.password[0] }}
+                                {{ Array.isArray(errors.password) ? errors.password[0] : errors.password }}
                             </div>
                         </div>
 
-                        <div class="flex justify-between items-center">
+                        <div class="flex justify-between items-center mt-5">
                             <span class="text-sm">
                                 Have an account?
-                                <a href="" class="text-blue-500">
-                                    Log in here
-                                </a> 
+                                <router-link 
+                                    to="/login"
+                                    class="text-blue-500"
+                                >
+                                    Sign in here
+                                </router-link>
                             </span>
-                            <button class="border border-gray-300 px-7 py-1 rounded-full hover:bg-[#5FB15F] hover:text-white">
-                                Register
+                            <button 
+                                :class="isLoading ? 'disabled bg-gray-500 opacity-60' : ''"
+                                class="border border-gray-300 px-7 py-1 rounded-full hover:bg-[#5FB15F] hover:text-white">
+                                {{ isLoading ? 'Submitting...' : 'Register' }}
                             </button>
                         </div>
                     </div>
@@ -98,7 +103,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { useToast } from 'vue-toastification';
 
     export default {
         data() {
@@ -112,6 +117,9 @@ import axios from 'axios';
                 isLoading: false,
                 errors: {}
             }
+        },
+        created() {
+            this.toast = useToast();
         },
         methods: {
             async handleRegister() {
@@ -131,14 +139,34 @@ import axios from 'axios';
 
                     try {
                         const response = await axios.post(`/api/register`, this.form);
-                        this.form = {};
+                        // store token
+                        localStorage.setItem('auth_token', response.data.token);
+                        this.resetForm();
+                        this.toast.success('Registration successful');
+                        setTimeout(() => {
+                            this.$router.push('/login');
+                        }, 1500);
+                        
                     } catch (error) {
-                        this.errors = error.response.data.errors;
+                        if (error.response?.data?.errors){
+                            this.errors = error.response.data.errors;
+                        } else {
+                            this.toast.error('Registration failed. Please try again.');
+                        }
                     } finally {
                         this.isLoading = false;
                     }
                 }
+            },
+            resetForm() {
+                this.form = {
+                    firstname: '',
+                    lastname: '',
+                    email: '',
+                    password: ''
+                }
             }
         }
+
     }
 </script>
