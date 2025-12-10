@@ -55,8 +55,26 @@
                         </div>  
                     </div>
                     Reactions
-                    <!-- <div class="mt-5 flex gap-3">
-                        <div 
+                    <div class="mt-5 flex gap-3">
+                        <div>
+                            <button class="flex gap-2 items-center ">
+                                <Icon icon="fluent-emoji-flat:red-heart" width="26" height="26" />
+                                <!-- {{ recipe.hearts_count }} -->
+                            </button>
+                        </div>
+                        <div>
+                            <button class="flex gap-2 items-center ">
+                                <Icon icon="noto:fire" width="26" height="26" />
+                                <!-- {{ recipe.fires_count }} -->
+                            </button>
+                        </div>
+                        <div>
+                            <button class="flex gap-2 items-center ">
+                                <Icon icon="fluent-emoji-flat:thumbs-down" width="26" height="26" />
+                                <!-- {{ recipe.dislikes_count }} -->
+                            </button>
+                        </div>
+                        <!-- <div 
                             @click="manageReaction('heart')"
                             class="border px-2 py-1 bg-slate-200 rounded cursor-pointer"
                             :class="checkReaction('heart') ? 'border-green-500' : '' " 
@@ -85,8 +103,8 @@
                                 <Icon icon="fluent-emoji-flat:thumbs-down" width="26" height="26" />
                                 {{ recipe.dislikes_count }}
                             </button>
-                        </div>
-                    </div> -->
+                        </div> -->
+                    </div>
 
                     <!-- Large screen -->
                      <!-- <div class="flex gap-2 lg:flex-wrap mt-2">
