@@ -61,10 +61,16 @@ class RecipeController extends Controller
                 'user' => function($q) { 
                     $q->withCount('recipes'); 
                 }, 
-                'reactions', 
                 'comments.user',
                 'comments.replies.user'
-            ])->findOrFail($id);
+            ])
+            ->withCount([
+                'reactions as love_reactions_count' => function($q){ $q->where('reaction_type', 'love'); },
+                'reactions as fire_reactions_count' => function($q){ $q->where('reaction_type', 'fire'); },
+                'reactions as laugh_reactions_count' => function($q){ $q->where('reaction_type', 'laugh'); },
+                'reactions as dislike_reactions_count' => function($q){ $q->where('reaction_type', 'dislike'); },
+            ])
+            ->findOrFail($id);
             
             return response()->json([
                 'recipe' => $recipe

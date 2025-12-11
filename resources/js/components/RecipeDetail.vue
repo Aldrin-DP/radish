@@ -10,12 +10,12 @@
         v-else-if="recipe" 
         class="mt-3"
     >   
-        <div class="w-full">
+        <div class="w-full pe-10">
             <div class="flex gap-3 items-center">
-                <h2 class=" text-lg font-semibold">{{ recipe.recipe_name }}</h2>
+                <h2 class=" text-xl font-semibold">{{ recipe.recipe_name }}</h2>
                 <div class="flex items-center">
                     <Icon icon="mdi-light:heart" width="16" height="16" />    
-                    <span class="text-gray-600">{{  }}</span>
+                    <span class="text-gray-600"></span>
                 </div>
             </div>    
             <div class="sm:flex gap-5">
@@ -25,7 +25,6 @@
                         :alt="recipe.recipe_name"
                         class="h-full w-full object-cover rounded-lg"
                     >
-                    </img>
                 </div>
                 <div class="sm:mt-1 flex-1">
                     <div
@@ -54,24 +53,48 @@
                             <p>{{ recipe.prep_time }} mins.</p>
                         </div>  
                     </div>
-                    Reactions
-                    <div class="mt-5 flex gap-3">
-                        <div>
+                    
+                    <div class="mt-7 flex gap-3">
+                        <div
+                            @click="toggleReaction('love')" 
+                            class="border px-2 py-1 bg-slate-200 rounded cursor-pointer"
+                            :class="checkReaction('love') ? 'border-green-500' : ''"
+                        >
                             <button class="flex gap-2 items-center ">
                                 <Icon icon="fluent-emoji-flat:red-heart" width="26" height="26" />
-                                <!-- {{ recipe.hearts_count }} -->
+                                <span class="">
+                                    {{ recipe.love_reactions_count }}
+                                </span>
                             </button>
                         </div>
-                        <div>
+                        <div 
+                            @click="toggleReaction('fire')" 
+                            class="border px-2 py-1 bg-slate-200 rounded cursor-pointer">
                             <button class="flex gap-2 items-center ">
                                 <Icon icon="noto:fire" width="26" height="26" />
-                                <!-- {{ recipe.fires_count }} -->
+                                <span class="">
+                                    {{ recipe.fire_reactions_count }}
+                                </span>
                             </button>
                         </div>
-                        <div>
+                        <div 
+                            @click="toggleReaction('laugh')" 
+                            class="border px-2 py-1 bg-slate-200 rounded cursor-pointer">
+                            <button class="flex gap-2 items-center ">
+                                <Icon icon="noto:rolling-on-the-floor-laughing" width="26" height="26" />
+                                <span class="">
+                                    {{ recipe.laugh_reactions_count }}
+                                </span>
+                            </button>
+                        </div>
+                        <div 
+                            @click="toggleReaction('dislike')" 
+                            class="border px-2 py-1 bg-slate-200 rounded cursor-pointer">
                             <button class="flex gap-2 items-center ">
                                 <Icon icon="fluent-emoji-flat:thumbs-down" width="26" height="26" />
-                                <!-- {{ recipe.dislikes_count }} -->
+                                <span class="">
+                                    {{ recipe.dislike_reactions_count }}
+                                </span>
                             </button>
                         </div>
                         <!-- <div 
@@ -107,6 +130,12 @@
                     </div>
 
                     <!-- Large screen -->
+                    <div class="mt-10">
+                        <button class="bg-green-600 px-5 py-2 text-lg rounded-full text-slate-200 font-semibold flex gap-2">
+                            Add to Favorites
+                            <Icon icon="uis:favorite" width="24" height="24" />
+                        </button>
+                    </div>
                      <!-- <div class="flex gap-2 lg:flex-wrap mt-2">
                         <base-button
                             variant="primary"
@@ -182,6 +211,7 @@
 </template>
 
 <script>
+import { useToast } from 'vue-toastification';
     export default {
         props: {
             recipe: {
@@ -200,6 +230,23 @@
             return {
                 imagePath: '/storage/'
             }
+        }, 
+        methods: {
+            async toggleReaction(reactionType) {
+                try {
+                    const recipeId = this.$route.params.id;
+                    const response = await axios.post(`/api/recipes/${recipeId}/reactions`, {
+                        reaction_type: reactionType
+                    });
+                    this.toast.success('Reaction saved.');
+                } catch (error){
+                    console.error('Reaction failed', error);
+                    this.toast.error('Something went wrong. Please try again.');
+                }
+            }
+        },
+        created() {
+            this.toast = useToast();
         }
     }
 </script>
