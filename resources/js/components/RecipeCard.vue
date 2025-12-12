@@ -1,7 +1,7 @@
 <template>
     <div class="flex justify-between text-sm items-center">
         <div>
-            <p>{{ recipe.user.firstname + ' ' + recipe.user.lastname + '.'}}</p>
+            <p>{{ recipe.user.firstname + ' ' + recipe.user.lastname}}</p>
             <div class="flex items-center">
                 <Icon icon="mdi-light:heart" width="16" height="16" />
                 <span v-if="recipe.likes_count == 0">0</span>

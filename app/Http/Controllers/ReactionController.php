@@ -19,10 +19,10 @@ class ReactionController extends Controller
 
             if ($existingReaction && $existingReaction->reaction_type === $reactionType){
                 $existingReaction->delete();
-                return response()->json(['message' => 'Removed reaction']);
             } else if ($existingReaction && $existingReaction->reaction_type !== $reactionType){
                 $existingReaction->reaction_type = $reactionType;
                 $existingReaction->save();
+                $wasRemoved = true;
             } else {
                 Reaction::create([
                     'recipe_id' => $recipeId,
@@ -30,9 +30,26 @@ class ReactionController extends Controller
                     'reaction_type' => $reactionType
                 ]);
             }
+            
+            $reactionCount = [
+                'love' => Reaction::where('reaction_type', 'love')
+                                ->where('recipe_id', $recipeId)
+                                ->count(),
+                'fire' => Reaction::where('reaction_type', 'fire')
+                                ->where('recipe_id', $recipeId)
+                                ->count(),
+                'laugh' => Reaction::where('reaction_type', 'laugh')
+                                ->where('recipe_id', $recipeId)
+                                ->count(),
+                'dislike' => Reaction::where('reaction_type', 'dislike')
+                                ->where('recipe_id', $recipeId)
+                                ->count()
+            ];
 
             return response()->json([
-                'message' => 'Reaction success'
+                'message' => 'Reaction updated',
+                'counts' => $reactionCount,
+                'removed' => $wasRemoved
             ], 201);
 
         } catch (\Exception $e){

@@ -4,6 +4,8 @@
             <RecipeDetail 
                 :recipe="recipe"
                 :isLoading="isLoading"
+                :user="user"
+                @reaction-clicked="toggleReaction"
             />
         </div>
         <div class="lg:w-4/12">
@@ -21,6 +23,7 @@
 <script>
 import RecipeDetail from '../components/RecipeDetail.vue';
 import CommentSection from '../components/CommentSection.vue';
+import { useToast } from 'vue-toastification';
 
 export default {
         components: {
@@ -29,7 +32,12 @@ export default {
         },
         props: {
             isLoggedIn: {
-                type: Boolean
+                type: Boolean,
+                default: false
+            },
+            user: {
+                type: Object,
+                required: true,
             }
         },
         data() {
@@ -54,29 +62,74 @@ export default {
                 }
             },
             handleCommentAdded(newComment) {
-                console.log('New comment received:', newComment);
-                console.log('Has parent_id?', newComment.parent_id);
-
                 if (newComment.parent_id){
-                      console.log('Looking for parent:', newComment.parent_id)
+
                     const parentComment = this.comments.find(c => c.id === newComment.parent_id);
-                     console.log('Found parent?', parentComment);
+
                     if (parentComment){
                         if (!parentComment.replies){
                             parentComment.replies = [];
                         }
                         parentComment.replies.push(newComment);
-                                    console.log('Parent after push:', parentComment.replies);
-
                     }
                    
                 } else {
                     this.comments.unshift(newComment);
                 }
+            },
+            async toggleReaction(reactionType) {
+
+                if (!this.isLoggedIn){
+                    this.toast.error('Please login to react');
+                    return;
+                }
+
+                try {
+                    const recipeId = this.$route.params.id;
+                    const response = await axios.post(`/api/recipes/${recipeId}/reactions`, {
+                        reaction_type: reactionType
+                    });
+                    this.toast.success('Reaction saved!');
+                    this.recipe.love_reactions_count = response.data.counts.love;
+                    this.recipe.fire_reactions_count = response.data.counts.fire;
+                    this.recipe.laugh_reactions_count = response.data.counts.laugh;
+                    this.recipe.dislike_reactions_count = response.data.counts.dislike;
+
+                     this.$emit('user-reaction-changed');
+
+                    const existingReactionIndex = this.user.reactions.findIndex(
+                        r => r.recipe_id === Number(this.$route.params.id)
+                    );
+
+                    if (response.data.removed) {
+                        // user removed reaction
+                        if (existingReactionIndex !== -1) {
+                            this.user.reactions.splice(existingReactionIndex, 1);
+                        }
+                    } else {
+                        // User added/changed reaction
+                        if (existingReactionIndex !== -1) {
+                            this.user.reactions[existingReactionIndex].reaction_type = reactionType;
+                        } else {
+                            this.user.reactions.push({
+                                recipe_id: Number(this.$route.params.id),
+                                reaction_type: reactionType,
+                                user_id: this.user_id
+                            });
+                        }
+                    }
+
+                } catch (error){
+                    console.error('Reaction failed', error);
+                    this.toast.error('Failed to save reaction');
+                }
             }
         },
         mounted() {
             this.fetchRecipe();
-        }
+        },
+        created() {
+            this.toast = useToast();
+        },
     }
 </script>

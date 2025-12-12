@@ -7,8 +7,10 @@
         />
 
         <main class="px-5">
-            <router-view v-slot="{ Component }">
-                <component :is="Component" :isLoggedIn="isLoggedIn" />
+            <router-view v-slot="{ Component }"
+                @user-reaction-changed="fetchCurrentUser"
+            >
+                <component :is="Component" :isLoggedIn="isLoggedIn" :user="user" />
             </router-view>
         </main>
 

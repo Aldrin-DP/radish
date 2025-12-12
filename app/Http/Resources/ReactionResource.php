@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class ReactionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +16,9 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'firstname' => $this->firstname,
-            'lastname' => $this->lastname,
-            'email' => $this->email,
-            'reactions' => ReactionResource::collection($this->whenLoaded('reactions'))
+            'reaction_type' => $this->reaction_type,
+            'created_at' => $this->created_at,
+            'recipe_id' => $this->recipe_id,
         ];
     }
 }

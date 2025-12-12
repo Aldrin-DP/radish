@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 p-3 z-50">
-            <div class="bg-white bg-opacity-90 p-6 rounded border-t-8 border-t-[#E94E63] w-full md:w-2/3 lg:w-5/12">
+            <div class="bg-white p-6 rounded border-t-8 border-t-[#E94E63] w-full md:w-2/3 lg:w-5/12">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-xl font-semibold">
                         <span v-if="step === 1">Tell Us About Your Recipe</span>

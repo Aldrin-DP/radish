@@ -11,13 +11,7 @@ class UserController extends Controller
     public function fetchCurrentUser() {
 
         try {
-            $user = auth()->user();
-
-            if (!$user){
-                return response()->json([
-                    'message' => 'Unauthenticated'
-                ], 401);
-            }
+            $user = auth()->user()->load('reactions');
 
             return response()->json([
                 'message' => 'Success',

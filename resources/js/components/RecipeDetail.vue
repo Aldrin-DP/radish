@@ -12,7 +12,7 @@
     >   
         <div class="w-full pe-10">
             <div class="flex gap-3 items-center">
-                <h2 class=" text-xl font-semibold">{{ recipe.recipe_name }}</h2>
+                <h2 class=" text-2xl font-semibold">{{ recipe.recipe_name }}</h2>
                 <div class="flex items-center">
                     <Icon icon="mdi-light:heart" width="16" height="16" />    
                     <span class="text-gray-600"></span>
@@ -56,9 +56,12 @@
                     
                     <div class="mt-7 flex gap-3">
                         <div
-                            @click="toggleReaction('love')" 
+                            @click="$emit('reaction-clicked', 'love')" 
                             class="border px-2 py-1 bg-slate-200 rounded cursor-pointer"
-                            :class="checkReaction('love') ? 'border-green-500' : ''"
+                            :class="{
+                                'text-green-500': userReaction?.reaction_type === 'love',
+                                'border-green-500': userReaction?.reaction_type === 'love'
+                            }"
                         >
                             <button class="flex gap-2 items-center ">
                                 <Icon icon="fluent-emoji-flat:red-heart" width="26" height="26" />
@@ -68,8 +71,13 @@
                             </button>
                         </div>
                         <div 
-                            @click="toggleReaction('fire')" 
-                            class="border px-2 py-1 bg-slate-200 rounded cursor-pointer">
+                            @click="$emit('reaction-clicked', 'fire')" 
+                            class="border px-2 py-1 bg-slate-200 rounded cursor-pointer text-gre"
+                            :class="{
+                                'text-green-500': userReaction?.reaction_type === 'fire',
+                                'border-green-500': userReaction?.reaction_type === 'fire'
+                            }"
+                        >
                             <button class="flex gap-2 items-center ">
                                 <Icon icon="noto:fire" width="26" height="26" />
                                 <span class="">
@@ -78,8 +86,13 @@
                             </button>
                         </div>
                         <div 
-                            @click="toggleReaction('laugh')" 
-                            class="border px-2 py-1 bg-slate-200 rounded cursor-pointer">
+                            @click="$emit('reaction-clicked', 'laugh')" 
+                            class="border px-2 py-1 bg-slate-200 rounded cursor-pointer"
+                            :class="{
+                                'text-green-500': userReaction?.reaction_type === 'laugh',
+                                'border-green-500': userReaction?.reaction_type === 'laugh'
+                            }"
+                        >
                             <button class="flex gap-2 items-center ">
                                 <Icon icon="noto:rolling-on-the-floor-laughing" width="26" height="26" />
                                 <span class="">
@@ -88,8 +101,13 @@
                             </button>
                         </div>
                         <div 
-                            @click="toggleReaction('dislike')" 
-                            class="border px-2 py-1 bg-slate-200 rounded cursor-pointer">
+                            @click="$emit('reaction-clicked', 'dislike')" 
+                            class="border px-2 py-1 bg-slate-200 rounded cursor-pointer"
+                            :class="{
+                                'text-green-500': userReaction?.reaction_type === 'dislike',
+                                'border-green-500': userReaction?.reaction_type === 'dislike'
+                            }"
+                        >
                             <button class="flex gap-2 items-center ">
                                 <Icon icon="fluent-emoji-flat:thumbs-down" width="26" height="26" />
                                 <span class="">
@@ -97,36 +115,6 @@
                                 </span>
                             </button>
                         </div>
-                        <!-- <div 
-                            @click="manageReaction('heart')"
-                            class="border px-2 py-1 bg-slate-200 rounded cursor-pointer"
-                            :class="checkReaction('heart') ? 'border-green-500' : '' " 
-                        >
-                            <button class="flex gap-2 items-center ">
-                                <Icon icon="fluent-emoji-flat:red-heart" width="26" height="26" />
-                                {{ recipe.hearts_count }}
-                            </button>
-                        </div>
-                        <div 
-                            @click="manageReaction('fire')"
-                            class="border px-2 py-1 bg-slate-200 rounded cursor-pointer"
-                            :class="checkReaction('fire') ? 'border-green-500' : '' "
-                        >
-                            <button class="flex gap-2 items-center ">
-                                <Icon icon="noto:fire" width="26" height="26" />
-                                {{ recipe.fires_count }}
-                            </button>
-                        </div>
-                        <div 
-                            @click="manageReaction('dislike')"
-                            class="border px-2 py-1 bg-slate-200 rounded cursor-pointer"
-                            :class="checkReaction('dislike') ? 'border-green-500' : '' "
-                        >
-                            <button class="flex gap-2 items-center ">
-                                <Icon icon="fluent-emoji-flat:thumbs-down" width="26" height="26" />
-                                {{ recipe.dislikes_count }}
-                            </button>
-                        </div> -->
                     </div>
 
                     <!-- Large screen -->
@@ -136,117 +124,60 @@
                             <Icon icon="uis:favorite" width="24" height="24" />
                         </button>
                     </div>
-                     <!-- <div class="flex gap-2 lg:flex-wrap mt-2">
-                        <base-button
-                            variant="primary"
-                            class="lg:flex hidden items-center gap-1 mt-5"
-                            @click="toggleFavorite"
-                        >
-                            {{ isFavorited ? 'Remove from Favorites' : 'Add from Favorites' }}
-                            <Icon icon="clarity:favorite-line" width="18"></Icon> 
-                        </base-button>
-                        <base-button
-                            v-if="user.data.id == recipe.user_id"
-                            variant="secondary" 
-                            class="lg:flex hidden items-center gap-1 mt-5 bg-blue-400 hover:bg-blue-500"   
-                        >
-                            
-                            <Icon icon="material-symbols:edit-outline" width="18"></Icon> 
-                        </base-button>
-                        <base-button
-                            v-if="user.data.id === recipe.user_id"
-                            variant="danger"    
-                            class="lg:flex hidden items-center gap-1 mt-5"
-                            @click="deleteRecipe"
-                        >
-                        
-                            <Icon icon="material-symbols:delete-outline" width="18"></Icon> 
-                        </base-button>
-                     </div> -->
                 </div>
             </div>
             <div class="">
                 <div class="mt-2">
-                    <label for="" class="text-gray-500 font-semibold">Ingredients:</label>      
+                    <label for="" class="text-gray-500 font-semibold text-lg">Ingredients:</label>      
                     <p class="whitespace-pre-line">
                         {{ recipe.ingredients }}
                     </p>
                 </div>
                 <div class="mt-2">
-                    <label for="" class="text-gray-500 font-semibold">Instructions:</label>      
+                    <label for="" class="text-gray-500 font-semibold text-lg">Instructions:</label>      
                     <p class="whitespace-pre-line">
                         {{ recipe.steps }}
                     </p>
                 </div>
             </div>
-            <!-- <div class="flex gap-2 mb-3 lg:hidden">
-                <base-button
-                    v-if="user.data.id == recipe.user_id"
-                    variant="primary"
-                    class="flex items-center gap-1 mt-5"
-                    @click.prevent="toggleFavorite"
-                >
-                    {{ isFavorited ? 'Remove from Favorites' : 'Add from Favorites' }}
-                    
-                    <Icon icon="clarity:favorite-line" width="18"></Icon> 
-                </base-button>
-                <base-button
-                    v-if="user.data.id == recipe.user_id"
-                    variant="secondary" 
-                    class="flex items-center gap-1 mt-5 bg-blue-400 text-white hover:bg-blue-500"   
-                >
-                    Edit
-                    <Icon icon="material-symbols:edit-outline" width="18"></Icon> 
-                </base-button>
-                <base-button
-                    variant="danger"    
-                    class="flex items-center gap-1 mt-5"
-                >
-                    Delete
-                    <Icon icon="material-symbols:delete-outline" width="18"></Icon> 
-                </base-button>
-            </div> -->
         </div>
     </div>
 </template>
 
 <script>
-import { useToast } from 'vue-toastification';
     export default {
         props: {
             recipe: {
-                type: Object
+                type: Object,
+                required: true
             },
             isLoading: {
-                type: Boolean
+                type: Boolean,
+                default: false
+            },
+            user: {
+                type: Object,
+                required: true,
             }
         },
         watch: {
-            recipe(newVal) {
-                // console.log('Recipe', newVal);
+            reactionCount(newVal) {
+                console.log('Count', newVal);
             }
         },
         data() {
             return {
                 imagePath: '/storage/'
             }
-        }, 
-        methods: {
-            async toggleReaction(reactionType) {
-                try {
-                    const recipeId = this.$route.params.id;
-                    const response = await axios.post(`/api/recipes/${recipeId}/reactions`, {
-                        reaction_type: reactionType
-                    });
-                    this.toast.success('Reaction saved.');
-                } catch (error){
-                    console.error('Reaction failed', error);
-                    this.toast.error('Something went wrong. Please try again.');
-                }
-            }
         },
-        created() {
-            this.toast = useToast();
+        computed: {
+            userReaction() {
+                if (!this.user?.reactions) return null;
+                
+                return this.user.reactions.find(reaction => 
+                    reaction.recipe_id === Number(this.$route.params.id)
+                );
+            }
         }
     }
 </script>
