@@ -3,9 +3,9 @@
         <div>
             <p>{{ recipe.user.firstname + ' ' + recipe.user.lastname}}</p>
             <div class="flex items-center">
-                <Icon icon="mdi-light:heart" width="16" height="16" />
-                <span v-if="recipe.likes_count == 0">0</span>
-                <span v-else>{{ recipe.likes_count }}</span>
+                <Icon icon="fontisto:comments" width="20" height="13" />
+                <span v-if="recipe.comments_count == 0">0</span>
+                <span v-else>{{ recipe.comments_count }}</span>
             </div>
         </div>
         <div class="text-center">
@@ -31,8 +31,10 @@
             <p v-if="recipe.likes_count > 0"
                 class="absolute rounded-full right-2 top-2 bg-green-400 px-1 text-xs text-green-800 font-bold">TOP</p>
             <div class="aspect-[2/2]">
-                <img :src="imagePath + recipe.image" alt="" class="w-full h-full object-cover rounded-lg hover:scale-105 transition-all duration-300">
-                </img>
+                <img 
+                    :src="imagePath + recipe.image" 
+                    alt="" 
+                    class="w-full h-full object-cover rounded-lg hover:scale-105 transition-all duration-300">
             </div>
         </div>
         <h4 class="text-center text-gray-800 font-semibold text-sm">{{ recipe.recipe_name }}</h4>                
@@ -44,6 +46,7 @@
         props: {
             recipe: {
                 type: Object,
+                required: true
             }
         },
         data() {

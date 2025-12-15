@@ -5,9 +5,9 @@
     <div v-else>       
         <button
             @click="openModal"
-            class="border px-3 py-2 rounded-full mt-3"
+            class="border border-gray-300 px-4 py-2 rounded-full mt-3 flex items-center gap-2"
         >
-            Add Recipe
+            Add Recipe <Icon icon="carbon:add-filled" width="24" height="24" />
         </button>
 
         <RecipeFormModal 
@@ -70,7 +70,6 @@
                 this.fetchRecipes();
             },
             goToRecipe(recipeId){
-                console.log('aasdasd');
                 this.$router.push(`/recipes/${recipeId}`);
             }
         },

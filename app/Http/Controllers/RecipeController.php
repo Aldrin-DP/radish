@@ -12,6 +12,7 @@ class RecipeController extends Controller
 
         try {
             $recipes = Recipe::with('user')
+                ->withCount('comments')
                 ->latest()    
                 ->paginate(24);
 
@@ -82,6 +83,27 @@ class RecipeController extends Controller
                 'error' => $e->getMessage()
             ], 404);
         }
+    }
+
+    public function fetchMyRecipes(){
+        
+        try {
+            $myRecipes = Recipe::with('user')
+                    ->withCount('comments')
+                    ->where('user_id', auth()->id())
+                    ->get();
+            
+            return response()->json([
+                'myRecipes' => $myRecipes
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed fetching my recipes',
+                'error' => $e->getMessage()
+            ],500);
+        }
+
     }
 
 
