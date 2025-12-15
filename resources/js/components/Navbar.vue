@@ -1,5 +1,5 @@
 <template>
-    <nav x-data="{ open: false }">
+    <nav>
         <div class="flex justify-between items-center p-3 pb-1 border-b">
             <div class="flex items-center">
                 <img 
@@ -17,8 +17,8 @@
 
             <div>
                 <div class="md:hidden" @click="open = !open">
-                    <Bars3Icon x-show="!open" class="w-6 h-6 cursor-pointer" />
-                    <XMarkIcon x-show="open" class="w-6 h-6 cursor-pointer" />
+                    <Bars3Icon v-show="!open" class="w-6 h-6 cursor-pointer" />
+                    <XMarkIcon v-show="open" class="w-6 h-6 cursor-pointer" />
                 </div>
 
                 <div class="hidden md:block">
@@ -133,6 +133,11 @@ export default {
         'user',
         'isLoggedIn'
     ],
+    data() {
+        return {
+            open: false
+        }
+    },
     methods: {
         async handleLogout() {
             try {

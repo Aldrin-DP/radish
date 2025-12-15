@@ -8,4 +8,5 @@ body {
 }
 .nav-link.active {
   background-color: #5FB15F;
+  color: #f6f6f6;
 }

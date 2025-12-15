@@ -1,18 +1,14 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from '../router';
-import Alpine from 'alpinejs';
 import axios from 'axios';
 import { Icon } from '@iconify/vue'
 import Toast from 'vue-toastification';
 import "vue-toastification/dist/index.css";
 
-window.Alpine = Alpine
-Alpine.start()
-
 window.axios = axios;
 
-// Request interceptor - runs before every request
+// request interceptor -- runs before every request
 axios.interceptors.request.use(
   config => {
     const token = localStorage.getItem('auth_token');

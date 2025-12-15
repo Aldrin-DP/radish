@@ -10,11 +10,11 @@ class ReactionResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @return array<string, mixed>
+     * @return array<string, mixed>s
      */
     public function toArray(Request $request): array
     {
-        return [
+        return [ 
             'id' => $this->id,
             'reaction_type' => $this->reaction_type,
             'created_at' => $this->created_at,
