@@ -71,7 +71,7 @@
                         <router-link 
                             to="/" 
                             active-class="active"
-                            class="px-4 py-1 flex hover:text-white transition-all duration-300 nav-link">
+                            class="px-4 py-1 flex hover:bg-[#399739] hover:text-white transition-all duration-300 nav-link">
                             Home
                         </router-link>                
                     </li>
@@ -81,12 +81,12 @@
                         class="hover:text-white transition-all duration-300 nav-link"
                         active-class="active"
                     >
-                        <a 
-                            class="px-4 py-1 flex"
-                            href="">
-                            My Recipes 
-                            
-                        </a>
+                        <router-link 
+                            to="/my-recipes" 
+                            active-class="active"
+                            class="px-4 py-1 flex hover:bg-[#399739] hover:text-white transition-all duration-300 nav-link">
+                            My Recipes
+                        </router-link>  
                     </li>
                     
                     <li 
