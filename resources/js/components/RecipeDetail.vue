@@ -10,14 +10,8 @@
         v-else-if="recipe" 
         class="mt-3"
     >   
-        <div class="w-full pe-10">
-            <div class="flex gap-3 items-center">
-                <h2 class=" text-2xl font-semibold">{{ recipe.recipe_name }}</h2>
-                <div class="flex items-center">
-                    <Icon icon="mdi-light:heart" width="16" height="16" />    
-                    <span class="text-gray-600"></span>
-                </div>
-            </div>    
+        <div class="w-full lg:pe-10">
+            <h2 class=" text-2xl font-semibold">{{ recipe.recipe_name }}</h2>   
             <div class="sm:flex gap-5">
                 <div class="w-full mt-1 flex-1">
                     <img 
@@ -27,13 +21,7 @@
                     >
                 </div>
                 <div class="sm:mt-1 flex-1">
-                    <div
-                        v-if="recipe.description" 
-                        class="mt-2 sm:mt-0 text-justify"
-                    >
-                        {{ recipe.description }}
-                    </div>
-                    <div class="flex gap-5 items-center mt-2">
+                    <div class="flex gap-5 items-center justify-center mt-2">
                         <div>
                             <p :class="{
                                     'bg-orange-400': recipe.difficulty == 'easy',
@@ -52,9 +40,30 @@
                             <Icon icon="tdesign:time"></Icon>
                             <p>{{ recipe.prep_time }} mins.</p>
                         </div>  
+                    </div>   
+                    <div
+                        v-if="recipe.description" 
+                        class="mt-5 sm:mt-0 text-justify"
+                    >
+                        {{ recipe.description }}
                     </div>
-                    
-                    <div class="mt-7 flex gap-3">
+                      
+                    <div>
+                        <div class="mt-2">
+                            <label for="" class="text-gray-500 font-semibold text-lg">Ingredients:</label>      
+                            <p class="whitespace-pre-line">
+                                {{ recipe.ingredients }}
+                            </p>
+                        </div>
+                        <div class="mt-2">
+                            <label for="" class="text-gray-500 font-semibold text-lg">Instructions:</label>      
+                            <p class="whitespace-pre-line">
+                                {{ recipe.steps }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-7 flex gap-3 justify-center">
                         <div
                             @click="$emit('reaction-clicked', 'love')" 
                             class="border px-2 py-1 bg-slate-200 rounded cursor-pointer"
@@ -79,7 +88,7 @@
                             }"
                         >
                             <button class="flex gap-2 items-center ">
-                                <Icon icon="noto:fire" width="26" height="26" />
+                                <Icon icon="noto:face-savoring-food" width="26" height="26" />
                                 <span class="">
                                     {{ recipe.fire_reactions_count }}
                                 </span>
@@ -117,36 +126,24 @@
                         </div>
                     </div>
 
-                    <div class="mt-10 flex gap-2">
-                        <button class="bg-green-600 px-5 py-2 text-lg rounded-full text-slate-200 font-semibold flex gap-2">
-                            Add to Favorites
+                    <div class="mt-5 flex gap-1 justify-center">
+                        <button class=" bg-green-600 px-2 py-2 rounded-full text-slate-200 font-semibold flex gap-1 items-center justify-center">
+                            <span v-if="!isRaddisher">Add to Favorites</span>
                             <Icon icon="uis:favorite" width="24" height="24" />
                         </button>
-                        <button 
+                        <div 
                             v-if="isRaddisher"
-                            class="px-4 py-2 border rounded-full bg-red-500 text-slate-200">
-                            <Icon icon="akar-icons:cross" width="24" height="24" />
-                        </button>
-                        <button 
-                            v-if="isRaddisher"
-                            class="px-4 py-2 border rounded-full bg-sky-500 text-slate-200">
-                            <Icon icon="mingcute:edit-line" width="24" height="24" />
-                        </button>
+                            class="flex gap-1"
+                        >
+                            <button class="flex gap-2 px-2 py-2 border rounded-full bg-sky-500 text-slate-200">
+                                <Icon icon="mingcute:edit-line" width="24" height="24" />
+                            </button>
+                            <button class="flex gap-2 px-2 py-2 border rounded-full bg-red-500 text-slate-200">
+                                <Icon icon="akar-icons:cross" width="24" height="24" />
+                            </button>
+                        </div>
+                        
                     </div>
-                </div>
-            </div>
-            <div>
-                <div class="mt-2">
-                    <label for="" class="text-gray-500 font-semibold text-lg">Ingredients:</label>      
-                    <p class="whitespace-pre-line">
-                        {{ recipe.ingredients }}
-                    </p>
-                </div>
-                <div class="mt-2">
-                    <label for="" class="text-gray-500 font-semibold text-lg">Instructions:</label>      
-                    <p class="whitespace-pre-line">
-                        {{ recipe.steps }}
-                    </p>
                 </div>
             </div>
         </div>
@@ -189,9 +186,9 @@
             },
             isRaddisher() {
                  console.log(
-        'recipe.user_id:', this.recipe?.user_id, typeof this.recipe?.user_id,
-        'user.id:', this.user?.id, typeof this.user?.id
-    );
+                    'recipe.user_id:', this.recipe?.user_id, typeof this.recipe?.user_id,
+                    'user.id:', this.user?.id, typeof this.user?.id
+                );
                 return Number(this.recipe?.user_id) === Number(this.user?.id);
             }
         }

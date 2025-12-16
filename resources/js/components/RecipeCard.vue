@@ -1,8 +1,8 @@
 <template>
-    <div class="flex justify-between text-sm items-center">
+    <div class="flex justify-between items-center">
         <div>
             <p>{{ recipe?.user?.firstname || 'You' }} {{ recipe?.user?.lastname || ''}}</p>
-            <div class="flex items-center">
+            <div class="flex items-center gap-1">
                 <Icon icon="fontisto:comments" width="20" height="13" />
                 <span v-if="recipe.comments_count == 0">0</span>
                 <span v-else>{{ recipe.comments_count }}</span>
@@ -15,13 +15,13 @@
                         'bg-orange-600': recipe.difficulty == 'medium',
                         'bg-orange-800': recipe.difficulty == 'hard',
                     }"
-                    class="px-2 py-[2px] bg-orange-400 text-xs rounded-full text-gray-100 capitalize">
+                    class="px-2 py-[2px] bg-orange-400 text-sm rounded-full text-gray-100 capitalize">
                     {{ recipe.difficulty }}
                 </p>
             </div>
             <div class="flex items-center gap-1">
                 <Icon icon="bx:dish" width="14" height="14" />
-                <p class="text-sm">{{ recipe.category }}</p>
+                <p class="">{{ recipe.category }}</p>
             </div>
         </div>
     </div>
@@ -37,7 +37,7 @@
                     class="w-full h-full object-cover rounded-lg hover:scale-105 transition-all duration-300">
             </div>
         </div>
-        <h4 class="text-center text-gray-800 font-semibold text-sm">{{ recipe.recipe_name }}</h4>                
+        <h4 class="text-center text-gray-800 font-semibold">{{ recipe.recipe_name }}</h4>                
     </div>
 </template>
 

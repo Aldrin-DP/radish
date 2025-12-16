@@ -1,8 +1,7 @@
 <template>
-
-    <div class="w-full mt-3">
+    <div class="w-full mt-10">
         <div>
-            <h4 class="font-semibold text-gray-500 mb-2">Raddisher</h4>
+            <h4 class="font-semibold text-gray-500 mb-1">Raddisher</h4>
             <div class="flex gap-2 items-center">
                 <!-- <img 
                     :src="fakeImage" 
