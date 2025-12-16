@@ -1,4 +1,18 @@
 <template>
+    <div>
+        <button
+            @click="openModal"
+            class="border border-gray-300 px-4 py-2 rounded-full mt-3 flex items-center gap-2"
+        >
+            Add Recipe <Icon icon="carbon:add-filled" width="24" height="24" />
+        </button>
+
+        <RecipeFormModal 
+            v-if="showModal"
+            @closeModal="closeModal"
+            @recipe-added="handleRecipeAdded"
+        />
+    </div>
     <div v-if="isLoading">
         Loading my recipes...
     </div>
@@ -24,13 +38,17 @@
 
 <script>
     import RecipeCard from '../components/RecipeCard.vue';
-    
+    import RecipeFormModal from '../components/RecipeFormModal.vue';
     export default {
-        components: { RecipeCard },
+        components: { 
+            RecipeCard, 
+            RecipeFormModal 
+        },
         data() {
             return {
                 myRecipes: [],
                 isLoading: false,
+                showModal: false,
             }
         },
         methods: {
@@ -44,6 +62,15 @@
                 } finally {
                     this.isLoading = false;
                 }
+            },
+            openModal() {
+                this.showModal = true;
+            },
+            closeModal() {
+                this.showModal = false;
+            },
+            handleRecipeAdded(data) {
+                this.myRecipes.push(data.recipe);
             },
             goToRecipe(recipeId){
                 this.$router.push(`/recipes/${recipeId}`);

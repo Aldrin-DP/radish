@@ -1,7 +1,7 @@
 <template>
     <div class="flex justify-between text-sm items-center">
         <div>
-            <p>{{ recipe.user.firstname + ' ' + recipe.user.lastname}}</p>
+            <p>{{ recipe?.user?.firstname || 'You' }} {{ recipe?.user?.lastname || ''}}</p>
             <div class="flex items-center">
                 <Icon icon="fontisto:comments" width="20" height="13" />
                 <span v-if="recipe.comments_count == 0">0</span>

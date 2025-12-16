@@ -1,5 +1,5 @@
 <template>
-    <div class="flex">
+    <div class="flex-col md:flex">
         <div class="lg:w-8/12">
             <RecipeDetail 
                 :recipe="recipe"

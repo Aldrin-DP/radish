@@ -16,6 +16,7 @@ class ReactionController extends Controller
             $existingReaction = Reaction::where('recipe_id', $recipeId)
                     ->where('user_id', auth()->id())
                     ->first();
+            $wasRemoved = false;
 
             if ($existingReaction && $existingReaction->reaction_type === $reactionType){
                 $existingReaction->delete();

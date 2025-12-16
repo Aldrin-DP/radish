@@ -117,16 +117,25 @@
                         </div>
                     </div>
 
-                    <!-- Large screen -->
-                    <div class="mt-10">
+                    <div class="mt-10 flex gap-2">
                         <button class="bg-green-600 px-5 py-2 text-lg rounded-full text-slate-200 font-semibold flex gap-2">
                             Add to Favorites
                             <Icon icon="uis:favorite" width="24" height="24" />
                         </button>
+                        <button 
+                            v-if="isRaddisher"
+                            class="px-4 py-2 border rounded-full bg-red-500 text-slate-200">
+                            <Icon icon="akar-icons:cross" width="24" height="24" />
+                        </button>
+                        <button 
+                            v-if="isRaddisher"
+                            class="px-4 py-2 border rounded-full bg-sky-500 text-slate-200">
+                            <Icon icon="mingcute:edit-line" width="24" height="24" />
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="">
+            <div>
                 <div class="mt-2">
                     <label for="" class="text-gray-500 font-semibold text-lg">Ingredients:</label>      
                     <p class="whitespace-pre-line">
@@ -167,7 +176,7 @@
         },
         data() {
             return {
-                imagePath: '/storage/'
+                imagePath: '/storage/',
             }
         },
         computed: {
@@ -177,6 +186,13 @@
                 return this.user.reactions.find(reaction => 
                     reaction.recipe_id === Number(this.$route.params.id)
                 );
+            },
+            isRaddisher() {
+                 console.log(
+        'recipe.user_id:', this.recipe?.user_id, typeof this.recipe?.user_id,
+        'user.id:', this.user?.id, typeof this.user?.id
+    );
+                return Number(this.recipe?.user_id) === Number(this.user?.id);
             }
         }
     }
