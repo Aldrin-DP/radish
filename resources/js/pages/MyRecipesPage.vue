@@ -1,31 +1,35 @@
 <template>
-    <div>
+    <div class="flex justify-between items-center">
         <button
             @click="openModal"
-            class="border border-gray-300 px-4 py-2 rounded-full mt-3 flex items-center gap-2"
-        >
+            class="border border-gray-300 px-4 py-2 rounded-full mt-3 flex items-center gap-2 hover:bg-[#53af53] hover:text-slate-200 transition-colors duration-300 focus:bg-[#53af53] focus:text-slate-200"
+        >   
             Add Recipe <Icon icon="carbon:add-filled" width="24" height="24" />
         </button>
-
+        <div class="flex justify-end mt-3">
+            <SearchBar 
+                @search="handleSearch"
+            />
+        </div>  
         <RecipeFormModal 
             v-if="showModal"
             @closeModal="closeModal"
             @recipe-added="handleRecipeAdded"
-        />
-    </div>
+        />  
+    </div>  
     <div v-if="isLoading">
         Loading my recipes...
-    </div>
-    <div 
+    </div>  
+    <div    
         v-else-if="myRecipes.length > 0"
-        class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"
-    >   
+        class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5"
+    >       
         <div 
             v-for="recipe in myRecipes" 
             :key="recipe.id" 
             class="cursor-pointer"
             @click="goToRecipe(recipe.id)"
-        >
+        >   
             <RecipeCard
                 :recipe="recipe"
             />
@@ -39,10 +43,13 @@
 <script>
     import RecipeCard from '../components/RecipeCard.vue';
     import RecipeFormModal from '../components/RecipeFormModal.vue';
+    import SearchBar from '../components/SearchBar.vue';
+
     export default {
         components: { 
             RecipeCard, 
-            RecipeFormModal 
+            RecipeFormModal,
+            SearchBar 
         },
         data() {
             return {

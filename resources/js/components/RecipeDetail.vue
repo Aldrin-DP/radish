@@ -12,15 +12,15 @@
     >   
         <div class="w-full lg:pe-10">
             <h2 class=" text-2xl font-semibold">{{ recipe.recipe_name }}</h2>   
-            <div class="sm:flex gap-5">
-                <div class="w-full mt-1 flex-1">
+            <div class="">
+                <div class="aspect-[2/2] mt-1 lg:w-full text-center">
                     <img 
                         :src="imagePath + recipe.image" 
                         :alt="recipe.recipe_name"
                         class="h-full w-full object-cover rounded-lg"
                     >
                 </div>
-                <div class="sm:mt-1 flex-1">
+                <div class="sm:mt-1 lg:w-full">
                     <div class="flex gap-5 items-center justify-center mt-2">
                         <div>
                             <p :class="{

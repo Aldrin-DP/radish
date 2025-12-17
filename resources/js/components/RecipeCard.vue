@@ -54,6 +54,5 @@
                 imagePath: '/storage/',
             }
         }
-
     }
 </script>

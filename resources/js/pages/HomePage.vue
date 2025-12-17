@@ -2,10 +2,18 @@
     <div v-if="isLoading" class="text-center mt-3 animate-pulse">
         Loading recipes...
     </div>
-    <div v-else>       
-        <div  class="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+    <div v-else>     
+        <div class="flex justify-end mt-3">
+            <SearchBar 
+                @search="handleSearch"
+            />
+        </div>  
+        <div v-if="filteredRecipes.length < 1">
+            No recipes found matching your search
+        </div>
+        <div  class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             <div 
-                v-for="recipe in recipes" 
+                v-for="recipe in filteredRecipes" 
                 :key="recipe.id"
                 class="cursor-pointer"
                 @click="goToRecipe(recipe.id)"
@@ -20,15 +28,18 @@
 
 <script>
     import RecipeCard from '../components/RecipeCard.vue';
-    
+    import SearchBar from '../components/SearchBar.vue';
+
     export default {
         components: {
             RecipeCard,
+            SearchBar
         },
         data() {
             return {
                 recipes: [],
                 isLoading: false,
+                searchQuery: '',
             }
         },
         methods: {
@@ -46,6 +57,19 @@
             },
             goToRecipe(recipeId){
                 this.$router.push(`/recipes/${recipeId}`);
+            },
+            handleSearch(query) {
+                this.searchQuery = query;
+                console.log(this.searchQuery);
+            }
+        },
+        computed: {
+            filteredRecipes(){
+                if (!this.searchQuery) return this.recipes;
+
+                return this.recipes.filter(recipe => 
+                    recipe.recipe_name.toLowerCase().includes(this.searchQuery.toLowerCase())
+                );
             }
         },
         mounted() {

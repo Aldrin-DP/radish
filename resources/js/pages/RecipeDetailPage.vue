@@ -1,6 +1,6 @@
 <template>
-    <div class="flex-col md:flex">
-        <div class="lg:w-8/12">
+    <div class="flex flex-col lg:flex-row">
+        <div class="lg:w-7/12">
             <RecipeDetail 
                 :recipe="recipe"
                 :isLoading="isLoading"
@@ -8,7 +8,7 @@
                 @reaction-clicked="toggleReaction"
             />
         </div>
-        <div class="lg:w-4/12">
+        <div class="lg:w-5/12">
             <CommentSection 
                 :comments="comments"
                 :isLoading="isLoading"

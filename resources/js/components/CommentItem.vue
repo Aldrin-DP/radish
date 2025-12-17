@@ -1,10 +1,10 @@
 <template>
     <div class="mt-4 border-b pb-5">
-        <p class="opacity-90 relative">
+        <p class="opacity-90 flex items-center gap-1">
             {{ comment.user.firstname }} {{ comment.user.lastname }} 
             <span 
                 v-if="recipe?.user_id === comment?.user.id"
-                class="text-green-500 text-sm font-semibold -mt left-[95px] absolute">
+                class="text-green-500 text-xs font-semibold">
                 Raddisher
             </span>
         </p> 

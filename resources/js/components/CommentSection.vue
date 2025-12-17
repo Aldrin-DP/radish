@@ -48,7 +48,9 @@
             </button>
         </div>
         
-        <div v-for="(comment, index) in comments" :key="comment.id">
+        <div
+            v-if="comments.length > 0" 
+            v-for="(comment, index) in comments" :key="comment.id">
             <CommentItem 
                 v-if="!comment.parent_id"
                 :comment="comment"
@@ -56,6 +58,9 @@
                 :isLoggedIn="isLoggedIn"
                 @comment-added="$emit('comment-added', $event)"
             />
+        </div>
+        <div v-else class="mt-5">
+            No comment yet. Be the first one to comment!
         </div>
         
     </div>

@@ -198,7 +198,7 @@
                                 >
                             </div>
 
-                            <div class="mt-2">
+                            <!-- <div class="mt-2">
                                 <small class="block mb-2">Additional note:</small>
                                 <textarea 
                                     v-model="recipe.additional_note"
@@ -207,7 +207,7 @@
                                     placeholder="Enter additional note"
                                 >
                                 </textarea>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="flex justify-between mt-4">
