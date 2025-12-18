@@ -3,7 +3,7 @@
         <input
             v-model="searchQuery" 
             type="text"
-            placeholder="Search..."
+            placeholder="Search recipes or ingredients"
             @input="$emit('search', searchQuery)"
             @keyup.enter="handleSearch"
             class="w-full px-4 pr-10 py-2 border rounded-full focus:outline-none focus:border-[#53af53] focus:ring-1 focus:ring-[#53af53]"

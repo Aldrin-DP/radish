@@ -8,8 +8,8 @@
                 @search="handleSearch"
             />
         </div>  
-        <div v-if="filteredRecipes.length < 1">
-            No recipes found matching your search
+        <div v-if="filteredRecipes.length < 1" class="font-semibold mt-2 text-lg">
+            We couldn’t find any recipes matching your search.
         </div>
         <div  class="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             <div 
@@ -60,7 +60,6 @@
             },
             handleSearch(query) {
                 this.searchQuery = query;
-                console.log(this.searchQuery);
             }
         },
         computed: {
@@ -68,7 +67,8 @@
                 if (!this.searchQuery) return this.recipes;
 
                 return this.recipes.filter(recipe => 
-                    recipe.recipe_name.toLowerCase().includes(this.searchQuery.toLowerCase())
+                    recipe.recipe_name.toLowerCase().includes(this.searchQuery.toLowerCase()) || 
+                    recipe.ingredients.toLowerCase().includes(this.searchQuery.toLowerCase())
                 );
             }
         },
