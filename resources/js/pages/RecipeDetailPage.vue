@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col lg:flex-row">
         <div class="lg:w-7/12">
-            <RecipeDetail 
+            <RecipeDetail
                 :recipe="recipe"
                 :isLoading="isLoading"
                 :user="user"
@@ -9,7 +9,7 @@
             />
         </div>
         <div class="lg:w-5/12">
-            <CommentSection 
+            <CommentSection
                 :comments="comments"
                 :isLoading="isLoading"
                 :isLoggedIn="isLoggedIn"
@@ -46,7 +46,7 @@ export default {
                 recipe: {},
                 comments: [],
             }
-        }, 
+        },
         methods: {
             async fetchRecipe() {
                 this.isLoading = true;
@@ -72,7 +72,7 @@ export default {
                         }
                         parentComment.replies.push(newComment);
                     }
-                   
+
                 } else {
                     this.comments.unshift(newComment);
                 }
@@ -107,7 +107,7 @@ export default {
                             this.user.reactions.splice(existingReactionIndex, 1);
                         }
                     } else {
-                        // User added/changed reaction
+                        // User added or changed reaction
                         if (existingReactionIndex !== -1) {
                             this.user.reactions[existingReactionIndex].reaction_type = reactionType;
                         } else {

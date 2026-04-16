@@ -1,5 +1,5 @@
 <template>
-    <div 
+    <div
         v-if="isLoading"
         class="p-3 animate-pulse text-lg"
     >
@@ -7,15 +7,15 @@
     </div>
 
     <div
-        v-else-if="recipe" 
+        v-else-if="recipe"
         class="mt-3"
-    >   
+    >
         <div class="w-full lg:pe-10">
-            <h2 class=" text-2xl font-semibold">{{ recipe.recipe_name }}</h2>   
+            <h2 class=" text-2xl font-semibold">{{ recipe.recipe_name }}</h2>
             <div class="">
                 <div class="aspect-[2/2] mt-1 lg:w-full text-center">
-                    <img 
-                        :src="imagePath + recipe.image" 
+                    <img
+                        :src="imagePath + recipe.image"
                         :alt="recipe.recipe_name"
                         class="h-full w-full object-cover rounded-lg"
                     >
@@ -24,11 +24,11 @@
                     <div class="flex gap-5 items-center justify-center mt-2">
                         <div>
                             <p :class="{
-                                    'bg-orange-400': recipe.difficulty == 'easy',
-                                    'bg-orange-600': recipe.difficulty == 'medium',
-                                    'bg-orange-800': recipe.difficulty == 'hard',
+                                'bg-green-100 text-green-700': recipe.difficulty == 'easy',
+                                'bg-yellow-100 text-yellow-700': recipe.difficulty == 'medium',
+                                'bg-red-100 text-red-700': recipe.difficulty == 'hard',
                                 }"
-                                class="px-4 bg-orange-400 rounded-full text-gray-100 capitalize">
+                                class="px-4  rounded-full text-gray-100 capitalize font-semibold">
                                 {{ recipe.difficulty }}
                             </p>
                         </div>
@@ -39,24 +39,24 @@
                         <div class="flex items-center gap-1">
                             <Icon icon="tdesign:time"></Icon>
                             <p>{{ recipe.prep_time }} mins.</p>
-                        </div>  
-                    </div>   
+                        </div>
+                    </div>
                     <div
-                        v-if="recipe.description" 
+                        v-if="recipe.description"
                         class="mt-5 sm:mt-0 text-justify"
                     >
                         {{ recipe.description }}
                     </div>
-                      
+
                     <div>
                         <div class="mt-2">
-                            <label for="" class="text-gray-500 font-semibold text-lg">Ingredients:</label>      
+                            <label for="" class="text-gray-500 font-semibold text-lg">Ingredients:</label>
                             <p class="whitespace-pre-line">
                                 {{ recipe.ingredients }}
                             </p>
                         </div>
                         <div class="mt-2">
-                            <label for="" class="text-gray-500 font-semibold text-lg">Instructions:</label>      
+                            <label for="" class="text-gray-500 font-semibold text-lg">Instructions:</label>
                             <p class="whitespace-pre-line">
                                 {{ recipe.steps }}
                             </p>
@@ -65,7 +65,7 @@
 
                     <div class="mt-7 flex gap-3 justify-center">
                         <div
-                            @click="$emit('reaction-clicked', 'love')" 
+                            @click="$emit('reaction-clicked', 'love')"
                             class="border px-2 py-1 bg-slate-200 rounded cursor-pointer"
                             :class="{
                                 'text-green-500': userReaction?.reaction_type === 'love',
@@ -79,8 +79,8 @@
                                 </span>
                             </button>
                         </div>
-                        <div 
-                            @click="$emit('reaction-clicked', 'fire')" 
+                        <div
+                            @click="$emit('reaction-clicked', 'fire')"
                             class="border px-2 py-1 bg-slate-200 rounded cursor-pointer text-gre"
                             :class="{
                                 'text-green-500': userReaction?.reaction_type === 'fire',
@@ -94,8 +94,8 @@
                                 </span>
                             </button>
                         </div>
-                        <div 
-                            @click="$emit('reaction-clicked', 'laugh')" 
+                        <div
+                            @click="$emit('reaction-clicked', 'laugh')"
                             class="border px-2 py-1 bg-slate-200 rounded cursor-pointer"
                             :class="{
                                 'text-green-500': userReaction?.reaction_type === 'laugh',
@@ -109,8 +109,8 @@
                                 </span>
                             </button>
                         </div>
-                        <div 
-                            @click="$emit('reaction-clicked', 'dislike')" 
+                        <div
+                            @click="$emit('reaction-clicked', 'dislike')"
                             class="border px-2 py-1 bg-slate-200 rounded cursor-pointer"
                             :class="{
                                 'text-green-500': userReaction?.reaction_type === 'dislike',
@@ -127,11 +127,14 @@
                     </div>
 
                     <div class="mt-5 flex gap-1 justify-center">
-                        <button class=" bg-green-600 px-2 py-2 rounded-full text-slate-200 font-semibold flex gap-1 items-center justify-center">
+                        <button
+
+                            class=" bg-green-600 px-2 py-2 rounded-full text-slate-200 font-semibold flex gap-1 items-center justify-center"
+                        >
                             <span v-if="!isRaddisher">Add to Favorites</span>
                             <Icon icon="uis:favorite" width="24" height="24" />
                         </button>
-                        <div 
+                        <div
                             v-if="isRaddisher"
                             class="flex gap-1"
                         >
@@ -142,7 +145,7 @@
                                 <Icon icon="akar-icons:cross" width="24" height="24" />
                             </button>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -179,8 +182,8 @@
         computed: {
             userReaction() {
                 if (!this.user?.reactions) return null;
-                
-                return this.user.reactions.find(reaction => 
+
+                return this.user.reactions.find(reaction =>
                     reaction.recipe_id === Number(this.$route.params.id)
                 );
             },

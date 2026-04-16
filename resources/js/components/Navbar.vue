@@ -2,7 +2,7 @@
     <nav>
         <div class="flex justify-between items-center p-3 pb-1 border-b">
             <div class="flex items-center">
-                <img 
+                <img
                     class="hidden"
                     src="/public/images/logo.png"
                     alt="Radish. logo"
@@ -30,7 +30,7 @@
                         Log in
                     </router-link>
 
-                    <button 
+                    <button
                         @click.prevent="handleLogout"
                         v-if="isLoggedIn"
                         type="submit"
@@ -43,12 +43,12 @@
         </div>
 
         <div class="md:flex justify-between flex-row-reverse bg-white bg-opacity-50">
-            
+
             <div class="px-3 py-2 bg-white bg-opacity-50 flex justify-between items-center">
                 <div class="flex gap-2 items-center">
-                    <img 
+                    <img v-if="isLoggedIn"
                         class="rounded-full"
-                        src="/public/images/placeholder.jpg" 
+                        src="/public/images/placeholder.jpg"
                         alt="Profile photo"
                         width="40px"
                     >
@@ -56,60 +56,60 @@
                         {{ user.firstname }} {{ user.lastname }}
                     </p>
                 </div>
-                <div class="flex gap-1 items-center md:hidden">
+                <!-- <div class="flex gap-1 items-center md:hidden">
                     <p>Recipes: 4</p>
-                </div>
-            </div>    
-           
+                </div> -->
+            </div>
 
-            <div 
-                class="p-3 flex-grow md:block" 
+
+            <div
+                class="p-3 flex-grow md:block"
                 :class="{ 'hidden': !open, 'block': open }"
             >
                 <ul class="cursor-pointer border md:flex md:border-none">
                     <li class="nav-link" active-class="active">
-                        <router-link 
-                            to="/" 
+                        <router-link
+                            to="/"
                             active-class="active"
                             class="px-4 py-1 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link">
                             Home
-                        </router-link>                
+                        </router-link>
                     </li>
-                                
-                    <li 
+
+                    <li
                         v-if="isLoggedIn"
                         class="hover:text-white transition-all duration-300 nav-link"
                         active-class="active"
                     >
-                        <router-link 
-                            to="/my-recipes" 
+                        <router-link
+                            to="/my-recipes"
                             active-class="active"
                             class="px-4 py-1 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link">
                             My Recipes
-                        </router-link>  
+                        </router-link>
                     </li>
-                    
-                    <li 
+
+                    <li
                         v-if="isLoggedIn"
                         class="hover:text-white transition-all duration-300"
                     >
-                        <a 
+                        <a
                             class="px-4 py-1 flex"
                             href="">
                             Favorites
                         </a>
-                    </li>                
+                    </li>
                     <li class="px-4 py-1 hover:bg-[#7dc97d] md:hidden">
-                        
-                        <router-link 
+
+                        <router-link
                             to="/login"
                             v-if="!isLoggedIn"
                             class="md:border border-gray-300 md:px-3 md:py-1 md:rounded-full"
                         >
                             Log in
-                        </router-link> 
-                    
-                        <button 
+                        </router-link>
+
+                        <button
                             v-if="isLoggedIn"
                             @click.prevent="handleLogout" type="submit" class="">
                                 Log out
@@ -146,11 +146,11 @@ export default {
                 localStorage.removeItem('auth_token');
                 this.$emit('userLoggedOut');
                 this.$router.push('/login');
-                
+
             } catch (error){
                 console.error('Logout error', error);
                 this.toast.error('Error logging out. Please try again');
-            }  
+            }
         }
     },
     created() {

@@ -10,3 +10,12 @@ body {
   background-color: #53af53;
   color: #f6f6f6;
 }
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+}

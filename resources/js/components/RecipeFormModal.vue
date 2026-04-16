@@ -10,7 +10,7 @@
                         <span v-if="step === 4">Upload a Photo of your Dish</span>
                         <span class="text-sm font-normal text-gray-500 ms-2">
                             {{step}} of 4
-                        </span> 
+                        </span>
                     </h2>
                     <button @click="$emit('closeModal')" class="text-gray-600 hover:text-gray-900 text-3xl">
                         &times;
@@ -23,13 +23,13 @@
                         <div v-if="step === 1">
                             <div class="mb-2">
                                 <label for="" class="text-sm" >What's your recipe called?</label>
-                                <input 
+                                <input
                                     v-model="recipe.recipe_name"
-                                    type="text" 
+                                    type="text"
                                     class="border w-full px-3 py-1 rounded text-sm focus:outline-gray-300"
                                     placeholder="Macaroni Salad"
                                 >
-                                <span 
+                                <span
                                     v-if="errors['recipe_name']"
                                     class="text-sm text-red-400"
                                 >
@@ -39,13 +39,13 @@
 
                             <div class="mb-2">
                                 <label for="" class="text-sm" >Describe your recipe <span class="text-xs text-gray-500">(Optional)</span></label>
-                                <textarea 
-                                    v-model="recipe.description" 
+                                <textarea
+                                    v-model="recipe.description"
                                     class="border w-full px-3 py-1 rounded text-xs focus:outline-gray-300"
                                     placeholder="Macaroni salad is a creamy pasta dish with mayo and veggies."
                                 >
                                 </textarea>
-                                <span 
+                                <span
                                     v-if="errors['description']"
                                     class="text-sm text-red-400"
                                 >
@@ -55,8 +55,8 @@
 
                             <div class="mb-2">
                                 <label for="" class="text-sm" >Choose a category</label>
-                                <select 
-                                    v-model="recipe.category" 
+                                <select
+                                    v-model="recipe.category"
                                     class="border w-full px-2 py-1 rounded text-sm focus:outline-gray-300"
                                 >
                                     <option value="" disabled selected>Select category:</option>
@@ -67,7 +67,7 @@
                                     <option value="Beverages">Beverages</option>
                                     <option value="Other">Other</option>
                                 </select>
-                                <span 
+                                <span
                                     v-if="errors['category']"
                                     class="text-sm text-red-400"
                                 >
@@ -77,8 +77,8 @@
 
                             <div class="mb-2">
                                 <label for="" class="text-sm" >How easy is it to make?</label>
-                                <select 
-                                    v-model="recipe.difficulty" 
+                                <select
+                                    v-model="recipe.difficulty"
                                     class="border w-full px-2 py-1 rounded text-sm focus:outline-gray-300"
                                 >
                                     <option value="" disabled selected>Select difficulty:</option>
@@ -86,7 +86,7 @@
                                     <option value="medium">Medium</option>
                                     <option value="hard">Hard</option>
                                 </select>
-                                <span 
+                                <span
                                     v-if="errors['difficulty']"
                                     class="text-sm text-red-400"
                                 >
@@ -96,13 +96,13 @@
 
                             <div class="mb-2">
                                 <label for="" class="text-sm" >How long does it take? <span class="text-xs text-gray-500">(Include prep and cook time (e.g., 30 minutes)</span></label>
-                                <input 
+                                <input
                                     v-model="recipe.prep_time"
-                                    type="number" 
+                                    type="number"
                                     class="border w-full px-3 py-1 rounded text-sm focus:outline-gray-300"
                                     placeholder="Eg. 60"
                                 >
-                                <span 
+                                <span
                                     v-if="errors['prep_time']"
                                     class="text-sm text-red-400"
                                 >
@@ -114,11 +114,11 @@
                         <div v-if="step === 2">
                             <div>
                                 <small class="opacity-70 block mb-1">Enter one ingredient per line.</small>
-                                <textarea 
+                                <textarea
                                     v-model="recipe.ingredients"
-                                    rows="6" 
+                                    rows="6"
                                     class="w-full p-2 focus:outline-gray-200 text-sm"
-                                    placeholder="Eg. 
+                                    placeholder="Eg.
 2 cups of flour
 3 eggs
 1/2 cup sugar
@@ -126,7 +126,7 @@
                                     "
                                 >
                                 </textarea>
-                                <span 
+                                <span
                                     v-if="errors['ingredients']"
                                     class="text-sm text-red-400"
                                 >
@@ -144,17 +144,17 @@
                         <div v-if="step === 3">
                             <div>
                                 <small class="opacity-70 block mb-1">Number each step in your instructions.</small>
-                                <textarea 
+                                <textarea
                                     v-model="recipe.steps"
-                                    rows="6" 
+                                    rows="6"
                                     class="w-full p-2 focus:outline-gray-200 text-sm"
-                                    placeholder="Eg. 
+                                    placeholder="Eg.
 1. Combine beef and oyster sauce.
 2. Heat 2 tablespoons cooking oil in a cooking pot.
                                     "
                                 >
                                 </textarea>
-                                <span 
+                                <span
                                     v-if="errors['steps']"
                                     class="text-sm text-red-400"
                                 >
@@ -169,17 +169,17 @@
                             </div>
                         </div>
 
-                        <div v-show="step === 4">
+                        <div v-show="step === 4" class="overflow-y-auto max-h-[420px] ">
                             <div>
                                 <small class="block mb-2">Upload one clear photo of your dish.</small>
-                                
-                                <input 
+
+                                <input
                                     @change="onFileChange"
                                     type="file"
                                     accept="image/*"
                                     class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer p-2"
                                 >
-                                <span 
+                                <span
                                     v-if="errors['image']"
                                     class="text-sm text-red-400"
                                 >
@@ -191,8 +191,8 @@
                             </div>
 
                             <div v-show="previewUrl" class="mt-3">
-                                <img 
-                                    :src="previewUrl" 
+                                <img
+                                    :src="previewUrl"
                                     alt="Dish Photo"
                                     class="sm:max-w-96 object-cover rounded-lg m-auto"
                                 >
@@ -200,9 +200,9 @@
 
                             <!-- <div class="mt-2">
                                 <small class="block mb-2">Additional note:</small>
-                                <textarea 
+                                <textarea
                                     v-model="recipe.additional_note"
-                                    rows="3" 
+                                    rows="3"
                                     class="w-full p-2 focus:outline-gray-200 text-sm"
                                     placeholder="Enter additional note"
                                 >
@@ -210,7 +210,7 @@
                             </div> -->
                         </div>
 
-                        <div class="flex justify-between mt-4">
+                        <div class="flex justify-between mt-4 overflow-y-auto">
                             <button
                                 v-if="step > 1"
                                 @click.prevent="prevStep"
@@ -218,17 +218,17 @@
                             >
                                 Previous Step
                             </button>
-                            <button 
+                            <button
                                 :disabled="loading"
                                 :class="loading ? 'opacity-50 cursor-not-allowed' : 'bg-[#5FB15F] text-white'"
                                 class="ml-auto border text-sm px-3 py-1 rounded-full bg-[#5FB15F] text-white border-[#5FB15F] hover:bg-green-600"
-                            >   
+                            >
                                 <span v-if="loading">
                                     Submitting...
                                 </span>
                                 <span v-else-if="step === 4">
                                     Share Recipe
-                                </span>    
+                                </span>
                                 <span v-else>Next Step</span>
                             </button>
                         </div>
@@ -262,7 +262,7 @@ import { useToast } from 'vue-toastification';
                 previewUrl: null,
                 image: null,
                 imageName: null,
-            }          
+            }
         },
         methods: {
             nextSteps() {
@@ -277,7 +277,7 @@ import { useToast } from 'vue-toastification';
                 } else {
 
                     const hasImage = this.validateStep();
-                    
+
                     if (!hasImage){
                         return
                     }
@@ -310,13 +310,13 @@ import { useToast } from 'vue-toastification';
                         this.toast.error('Something went wrong. Please try again.');
                         if (error.response && error.response.data.errors){
                             this.errors = error.response.data.errors;
-                        } 
+                        }
                     })
                     .finally(() => {
                         this.loading = false;
                     })
-                }             
-            },  
+                }
+            },
             prevStep() {
                 this.step--;
             },
@@ -354,7 +354,7 @@ import { useToast } from 'vue-toastification';
                     }
                 }
 
-                return Object.keys(this.errors).length === 0; 
+                return Object.keys(this.errors).length === 0;
             },
             onFileChange(event) {
                 const file = event.target.files[0];
@@ -362,11 +362,11 @@ import { useToast } from 'vue-toastification';
                 if (!file) {
                     return
                 }
-                
+
                 this.image = file;
                 this.imageName = file.name;
                 this.previewUrl = URL.createObjectURL(file);
-                
+
             },
             resetForm() {
                 this.recipe = {

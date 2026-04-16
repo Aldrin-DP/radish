@@ -1,12 +1,12 @@
 <template>
-    <div>
-        <Navbar 
+    <div class="app-wrapper">
+        <Navbar
             :user="user"
             :isLoggedIn="isLoggedIn"
             @userLoggedOut="handleUserLogout"
         />
 
-        <main class="px-5">
+        <main class="main-content px-5">
             <router-view v-slot="{ Component }"
                 @user-reaction-changed="fetchCurrentUser"
             >
@@ -14,27 +14,28 @@
             </router-view>
         </main>
 
-        <footer>
+        <Footer>
 
-        </footer>
+        </Footer>
     </div>
 </template>
 
 <script>
 
 import Navbar from '../components/Navbar.vue';
+import Footer from '../components/Footer.vue';
 
 export default {
-    components: { Navbar },
+    components: { Navbar, Footer },
     data() {
         return {
             user: {},
             isLoggedIn: false,
         }
-    }, 
+    },
     methods: {
         async fetchCurrentUser() {
-            
+
             try {
                 const response = await axios.get('/api/user');
                 this.user = response.data.user;

@@ -1,70 +1,67 @@
 <template>
-    <div class="p-5 w-full lg:w-8/12 ">
-        <div class=" flex border ">
-            <div class="w-3/6 p-3 flex items-center justify-center">
+    <div class="p-5 w-full lg:w-8/12 m-auto">
+        <div class="flex flex-col lg:flex-row border shadow-sm">
+            <div class="w-full lg:w-3/6 p-3 flex items-center justify-center relative">
                 <img src="/public/images/logo.png" alt="" width="100px">
-                <div>
-                    <p>Radish.</p>
+                <div class="after:content-[''] after:absolute after:right-0 after:top-0 after:w-full after:h-1 after:bg-[#E94E63]">
                     <p>Your recipe, your dish.</p>
                 </div>
-                
             </div>
 
-            <div class="w-3/6 p-3">
-                <h2 class="">Sign in</h2>
-                <form @submit.prevent="handleLogin">
-                    <div class="p-3">
-                        <div class="mb-2">
-                            <label for="" class="text-sm">Email Address</label>
-                            <input 
-                                type="text"
-                                v-model="form.email"
-                                class="border w-full px-3 py-1 rounded text-sm"
-                                placeholder="Email address"
-                            >
-                            <div 
-                                v-if="errors.email" 
-                                class="text-red-500 text-sm mb-1"
-                            >   
-                                {{ Array.isArray(errors.email) ? errors.email[0] : errors.email }}
+            <div class="w-full lg:w-3/6 p-3 relative">
+                <div class="after:content-[''] after:absolute after:right-0 after:top-0 after:w-full after:h-1 after:bg-[#5FB15F]">
+                    <h2 class="text-xl font-semibold mb-3">Sign in</h2>
+                    <form @submit.prevent="handleLogin">
+                        <div class="p-3">
+                            <div class="mb-2">
+                                <label for="" class="text">Email Address</label>
+                                <input
+                                    type="text"
+                                    v-model="form.email"
+                                    class="border w-full px-3 py-1 rounded text"
+                                    placeholder="Email address"
+                                >
+                                <div
+                                    v-if="errors.email"
+                                    class="text-red-500 mb-1"
+                                >
+                                    {{ Array.isArray(errors.email) ? errors.email[0] : errors.email }}
+                                </div>
+                            </div>
+
+                            <div class="mb-2">
+                                <label for="" class="">Password</label>
+                                <input
+                                    type="password"
+                                    v-model="form.password"
+                                    class="border w-full px-3 py-1 rounded "
+                                    placeholder="Password"
+                                >
+                                <div
+                                    v-if="errors.password"
+                                    class="text-red-500  mb-1"
+                                >
+                                    {{ Array.isArray(errors.password) ? errors.password[0] : errors.password }}
+                                </div>
+                            </div>
+
+                            <div class="mt-5">
+                                <button class="border w- border-gray-300 px-7 mb-3 py-1 rounded-full hover:bg-[#5FB15F] hover:text-white">
+                                    Sign in
+                                </button>
+                                <span class="block">
+                                    No account yet?
+                                    <router-link
+                                        to="/register"
+                                        class="text-blue-500">
+                                        Register here
+                                    </router-link>
+                                </span>
+
                             </div>
                         </div>
-
-                        <div class="mb-2">
-                            <label for="" class="text-sm">Password</label>
-                            <input 
-                                type="password" 
-                                v-model="form.password"
-                                class="border w-full px-3 py-1 rounded text-sm"
-                                placeholder="Password"
-                            >
-                            <div 
-                                v-if="errors.password" 
-                                class="text-red-500 text-sm mb-1"
-                            >
-                                {{ Array.isArray(errors.password) ? errors.password[0] : errors.password }}
-                            </div>
-                        </div>
-
-                        <div class="flex justify-between items-center">
-                            <span class="text-sm">
-                                No account yet?
-                                <router-link 
-                                    to="/register"
-                                    class="text-blue-500">
-                                    Register here
-                                </router-link>
-                                <a href="" >
-                                    
-                                </a> 
-                            </span>
-                            <button class="border border-gray-300 px-7 py-1 rounded-full hover:bg-[#5FB15F] hover:text-white">
-                                Sign in
-                            </button>
-                        </div>
-                    </div>
-                </form>
-
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -108,7 +105,7 @@ import axios from 'axios';
                             this.$router.push('/').then(() => {
                                 window.location.reload();
                             });
-                        }, 1200);
+                        }, 300);
                     } catch (error) {
                         if (error.response?.data?.errors){
                             this.errors = error.response.data.errors;
@@ -119,8 +116,8 @@ import axios from 'axios';
                         }
                     } finally {
                         this.isLoading = false;
-                    } 
-                } 
+                    }
+                }
             },
             resetForm() {
                 this.form = {

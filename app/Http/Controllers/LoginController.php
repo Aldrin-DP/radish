@@ -14,14 +14,14 @@ class LoginController extends Controller
 
         try {
             $credentials = $request->validated();
-        
+
             $user = User::where('email', $credentials['email'])->first();
 
             if (!$user || !Hash::check($request->password, $user->password)){
                 return response()->json([
                     'message' => 'Invalid credentials.',
                 ], 422);
-            } 
+            }
             $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
@@ -29,13 +29,13 @@ class LoginController extends Controller
                 'user' => new UserResource($user),
                 'token' => $token
             ],200);
-            
+
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Login failed.',
                 'error' => $e->getMessage()
             ], 500);
-        }   
+        }
     }
-    
+
 }
