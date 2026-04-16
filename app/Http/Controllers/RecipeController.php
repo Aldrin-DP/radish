@@ -13,13 +13,13 @@ class RecipeController extends Controller
         try {
             $recipes = Recipe::with('user')
                 ->withCount('comments')
-                ->latest()    
+                ->latest()
                 ->paginate(24);
 
             return response()->json([
                 'recipes' => $recipes,
             ], 200);
-            
+
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Failed to fetch recipes.',
@@ -37,7 +37,7 @@ class RecipeController extends Controller
                 $imagePath = $request->file('image')->store('recipes', 'public');
                 $validated['image'] = $imagePath;
             }
-            
+
             $validated['user_id'] = auth()->id();
 
             $recipe = Recipe::create($validated);
@@ -53,15 +53,42 @@ class RecipeController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-        
+
     }
-    
+
+    public function update(StoreRecipeRequest $request, $id) {
+
+    try {
+            $recipe = Recipe::findOrFail($id);
+
+            $validated = $request->validated();
+
+             if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('recipes', 'public');
+                $validated['image'] = $imagePath;
+            }
+
+            $recipe->update($validated);
+
+            return response()->json([
+                'message' => 'Recipe updated successfully',
+                'recipe' => $recipe
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Recipe added failed',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function show($id){
         try {
             $recipe = Recipe::with([
-                'user' => function($q) { 
-                    $q->withCount('recipes'); 
-                }, 
+                'user' => function($q) {
+                    $q->withCount('recipes');
+                },
                 'comments.user',
                 'comments.replies.user'
             ])
@@ -72,7 +99,7 @@ class RecipeController extends Controller
                 'reactions as dislike_reactions_count' => function($q){ $q->where('reaction_type', 'dislike'); },
             ])
             ->findOrFail($id);
-            
+
             return response()->json([
                 'recipe' => $recipe
             ], 200);
@@ -86,13 +113,13 @@ class RecipeController extends Controller
     }
 
     public function fetchMyRecipes(){
-        
+
         try {
             $myRecipes = Recipe::with('user')
                     ->withCount('comments')
                     ->where('user_id', auth()->id())
                     ->get();
-            
+
             return response()->json([
                 'myRecipes' => $myRecipes
             ], 200);

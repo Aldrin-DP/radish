@@ -20,6 +20,8 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('/user', [UserController::class, 'fetchCurrentUser']);
     Route::post('/recipes', [RecipeController::class, 'store']);
 
+    Route::put('/recipes/{recipeId}', [RecipeController::class, 'update']);
+
     Route::get('/my-recipes', [RecipeController::class, 'fetchMyRecipes']);
 
     Route::post('/recipes/{recipeId}/comments', [CommentController::class, 'store']);

@@ -138,7 +138,10 @@
                             v-if="isRaddisher"
                             class="flex gap-1"
                         >
-                            <button class="flex gap-2 px-2 py-2 border rounded-full bg-sky-500 text-slate-200">
+                            <button
+                                @click="$emit('edit-clicked', recipe)"
+                                class="flex gap-2 px-2 py-2 border rounded-full bg-sky-500 text-slate-200"
+                            >
                                 <Icon icon="mingcute:edit-line" width="24" height="24" />
                             </button>
                             <button class="flex gap-2 px-2 py-2 border rounded-full bg-red-500 text-slate-200">

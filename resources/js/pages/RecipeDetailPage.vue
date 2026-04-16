@@ -6,6 +6,7 @@
                 :isLoading="isLoading"
                 :user="user"
                 @reaction-clicked="toggleReaction"
+                @edit-clicked="openEditModal"
             />
         </div>
         <div class="lg:w-5/12">
@@ -18,9 +19,18 @@
             />
         </div>
     </div>
+    <RecipeFormModal
+        v-if="showEditModal"
+        :recipe="selectedRecipe"
+        @recipe-updated="handleRecipeUpdated"
+        @closeModal="showEditModal = false"
+    >
+
+    </RecipeFormModal>
 </template>
 
 <script>
+import RecipeFormModal from '../components/RecipeFormModal.vue';
 import RecipeDetail from '../components/RecipeDetail.vue';
 import CommentSection from '../components/CommentSection.vue';
 import { useToast } from 'vue-toastification';
@@ -28,7 +38,8 @@ import { useToast } from 'vue-toastification';
 export default {
         components: {
             RecipeDetail,
-            CommentSection
+            CommentSection,
+            RecipeFormModal
         },
         props: {
             isLoggedIn: {
@@ -45,6 +56,8 @@ export default {
                 isLoading: false,
                 recipe: {},
                 comments: [],
+                selectedRecipe: null,
+                showEditModal: false,
             }
         },
         methods: {
@@ -123,6 +136,13 @@ export default {
                     console.error('Reaction failed', error);
                     this.toast.error('Failed to save reaction');
                 }
+            },
+            handleRecipeUpdated(updatedRecipe) {
+                this.recipe = updatedRecipe.recipe ?? updatedRecipe;
+            },
+            openEditModal(recipe) {
+                this.selectedRecipe = recipe;
+                this.showEditModal = true;
             }
         },
         mounted() {

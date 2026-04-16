@@ -24,7 +24,7 @@
                             <div class="mb-2">
                                 <label for="" class="text-sm" >What's your recipe called?</label>
                                 <input
-                                    v-model="recipe.recipe_name"
+                                    v-model="form.recipe_name"
                                     type="text"
                                     class="border w-full px-3 py-1 rounded text-sm focus:outline-gray-300"
                                     placeholder="Macaroni Salad"
@@ -40,7 +40,7 @@
                             <div class="mb-2">
                                 <label for="" class="text-sm" >Describe your recipe <span class="text-xs text-gray-500">(Optional)</span></label>
                                 <textarea
-                                    v-model="recipe.description"
+                                    v-model="form.description"
                                     class="border w-full px-3 py-1 rounded text-xs focus:outline-gray-300"
                                     placeholder="Macaroni salad is a creamy pasta dish with mayo and veggies."
                                 >
@@ -56,7 +56,7 @@
                             <div class="mb-2">
                                 <label for="" class="text-sm" >Choose a category</label>
                                 <select
-                                    v-model="recipe.category"
+                                    v-model="form.category"
                                     class="border w-full px-2 py-1 rounded text-sm focus:outline-gray-300"
                                 >
                                     <option value="" disabled selected>Select category:</option>
@@ -78,7 +78,7 @@
                             <div class="mb-2">
                                 <label for="" class="text-sm" >How easy is it to make?</label>
                                 <select
-                                    v-model="recipe.difficulty"
+                                    v-model="form.difficulty"
                                     class="border w-full px-2 py-1 rounded text-sm focus:outline-gray-300"
                                 >
                                     <option value="" disabled selected>Select difficulty:</option>
@@ -97,7 +97,7 @@
                             <div class="mb-2">
                                 <label for="" class="text-sm" >How long does it take? <span class="text-xs text-gray-500">(Include prep and cook time (e.g., 30 minutes)</span></label>
                                 <input
-                                    v-model="recipe.prep_time"
+                                    v-model="form.prep_time"
                                     type="number"
                                     class="border w-full px-3 py-1 rounded text-sm focus:outline-gray-300"
                                     placeholder="Eg. 60"
@@ -115,7 +115,7 @@
                             <div>
                                 <small class="opacity-70 block mb-1">Enter one ingredient per line.</small>
                                 <textarea
-                                    v-model="recipe.ingredients"
+                                    v-model="form.ingredients"
                                     rows="6"
                                     class="w-full p-2 focus:outline-gray-200 text-sm"
                                     placeholder="Eg.
@@ -133,10 +133,10 @@
                                     {{ errors['ingredients'] }}
                                 </span>
                             </div>
-                            <div v-if="recipe.ingredients">
+                            <div v-if="form.ingredients">
                                 <label for="" class="text-gray-500 block text-sm">Preview</label>
                                 <pre class="whitespace-pre-line font-poppins text-sm">
-                                    {{ recipe.ingredients }}
+                                    {{ form.ingredients }}
                                 </pre>
                             </div>
                         </div>
@@ -145,7 +145,7 @@
                             <div>
                                 <small class="opacity-70 block mb-1">Number each step in your instructions.</small>
                                 <textarea
-                                    v-model="recipe.steps"
+                                    v-model="form.steps"
                                     rows="6"
                                     class="w-full p-2 focus:outline-gray-200 text-sm"
                                     placeholder="Eg.
@@ -161,10 +161,10 @@
                                     {{ errors['steps'] }}
                                 </span>
                             </div>
-                            <div v-if="recipe.steps">
+                            <div v-if="form.steps">
                                 <label for="" class="text-gray-500 block text-sm">Preview</label>
                                 <pre class="whitespace-pre-line font-poppins text-sm">
-                                    {{ recipe.steps }}
+                                    {{ form.steps }}
                                 </pre>
                             </div>
                         </div>
@@ -201,7 +201,7 @@
                             <!-- <div class="mt-2">
                                 <small class="block mb-2">Additional note:</small>
                                 <textarea
-                                    v-model="recipe.additional_note"
+                                    v-model="form.additional_note"
                                     rows="3"
                                     class="w-full p-2 focus:outline-gray-200 text-sm"
                                     placeholder="Enter additional note"
@@ -243,11 +243,17 @@
 import { useToast } from 'vue-toastification';
 
     export default {
+        props: {
+            recipe: {
+                type: Object,
+                default: null
+            }
+        },
         emits: ['closeModal', 'recipe-added'],
         data () {
             return {
                 step: 1,
-                recipe: {
+                form: {
                     recipe_name: '',
                     description: '',
                     category: '',
@@ -257,11 +263,12 @@ import { useToast } from 'vue-toastification';
                     steps: '',
                     additional_note: ''
                 },
-                errors: {},
-                loading: false,
                 previewUrl: null,
                 image: null,
                 imageName: null,
+
+                errors: {},
+                loading: false,
             }
         },
         methods: {
@@ -286,35 +293,56 @@ import { useToast } from 'vue-toastification';
 
                     const formData = new FormData();
 
-                    formData.append('recipe_name', this.recipe.recipe_name);
-                    formData.append('description', this.recipe.description);
-                    formData.append('category', this.recipe.category);
-                    formData.append('difficulty', this.recipe.difficulty);
-                    formData.append('prep_time', this.recipe.prep_time);
-                    formData.append('ingredients', this.recipe.ingredients);
-                    formData.append('steps', this.recipe.steps);
-                    formData.append('image', this.image);
-                    formData.append('additional_note', this.recipe.additional_note);
+                    formData.append('_method', 'PUT');
 
-                    axios.post('api/recipes', formData, { withCredentials: true })
-                    .then(response => {
-                        this.$emit('recipe-added', response.data);
+                    formData.append('recipe_name', this.form.recipe_name);
+                    formData.append('description', this.form.description);
+                    formData.append('category', this.form.category);
+                    formData.append('difficulty', this.form.difficulty);
+                    formData.append('prep_time', this.form.prep_time);
+                    formData.append('ingredients', this.form.ingredients);
+                    formData.append('steps', this.form.steps);
+                    if (this.image) {
+                        formData.append('image', this.image);
+                    }
+                    formData.append('additional_note', this.form.additional_note);
 
-                        this.resetForm();
-                        this.toast.success('Recipe added successfully!');
-                        this.$emit('closeModal');
-                        this.step = 1;
-                    })
-                    .catch(error => {
-                        console.log('Error:', error);
-                        this.toast.error('Something went wrong. Please try again.');
-                        if (error.response && error.response.data.errors){
-                            this.errors = error.response.data.errors;
-                        }
-                    })
-                    .finally(() => {
-                        this.loading = false;
-                    })
+                    if (this.recipe) {
+                        // edit
+                        axios.post(`/api/recipes/${this.recipe.id}`, formData, { withCredentials: true})
+                        .then(response => {
+                            this.$emit('recipe-updated', response.data);
+                            this.toast.success('Recipe updated successfully!');
+                            this.$emit('closeModal');
+                        })
+                        .catch(error => {
+                            console.log('FULL ERROR:', error.response);
+                            console.log('VALIDATION ERRORS:', error.response?.data?.errors);
+                            this.errors = error.response?.data?.errors || {};
+                            this.toast.error('Validation failed');
+                            });
+                    } else {
+                        // add
+                        axios.post('/api/recipes', formData, { withCredentials: true })
+                        .then(response => {
+                            this.$emit('recipe-added', response.data);
+
+                            this.resetForm();
+                            this.toast.success('Recipe added successfully!');
+                            this.$emit('closeModal');
+                            this.step = 1;
+                        })
+                        .catch(error => {
+                            console.log('Error:', error);
+                            this.toast.error('Something went wrong. Please try again.');
+                            if (error.response && error.response.data.errors){
+                                this.errors = error.response.data.errors;
+                            }
+                        })
+                        .finally(() => {
+                            this.loading = false;
+                        })
+                    }
                 }
             },
             prevStep() {
@@ -323,33 +351,33 @@ import { useToast } from 'vue-toastification';
             validateStep() {
                 this.errors = {};
                 if (this.step === 1){
-                    if (!this.recipe.recipe_name){
+                    if (!this.form.recipe_name){
                         this.errors.recipe_name = 'Recipe name is required.';
-                    } else if (this.recipe.recipe_name.length < 3){
+                    } else if (this.form.recipe_name.length < 3){
                         this.errors.recipe_name = 'Recipe name must be 3 or more characters.';
                     }
-                    if (!this.recipe.category){
+                    if (!this.form.category){
                         this.errors.category = 'Category is required.';
                     }
-                    if (!this.recipe.difficulty){
+                    if (!this.form.difficulty){
                         this.errors.difficulty = 'Difficulty is required.';
                     }
-                    if (!this.recipe.prep_time){
+                    if (!this.form.prep_time){
                         this.errors.prep_time = 'Cooking time is required.';
                     }
                 }
                 if (this.step === 2){
-                    if (!this.recipe.ingredients || this.recipe.ingredients.trim().length == 0){
+                    if (!this.form.ingredients || this.form.ingredients.trim().length == 0){
                         this.errors.ingredients = 'Ingredients field is required.';
                     }
                 }
                 if (this.step === 3){
-                    if (!this.recipe.steps || this.recipe.steps.trim().length == 0){
+                    if (!this.form.steps || this.form.steps.trim().length == 0){
                         this.errors.steps = 'Instructions field is required.';
                     }
                 }
                 if (this.step === 4){
-                    if (!this.image){
+                    if (!this.image && !this.previewUrl){
                         this.errors.image = 'Image field is required.';
                     }
                 }
@@ -369,7 +397,7 @@ import { useToast } from 'vue-toastification';
 
             },
             resetForm() {
-                this.recipe = {
+                this.form = {
                     recipe_name: '',
                     description: '',
                     category: '',
@@ -387,6 +415,26 @@ import { useToast } from 'vue-toastification';
         },
         created() {
             this.toast = useToast();
+        },
+        watch: {
+            recipe: {
+                immediate: true,
+                handler(newRecipe) {
+                    if (newRecipe) {
+                        this.form.recipe_name = newRecipe.recipe_name
+                        this.form.description = newRecipe.description
+                        this.form.category = newRecipe.category
+                        this.form.difficulty = newRecipe.difficulty
+                        this.form.prep_time = newRecipe.prep_time
+                        this.form.ingredients = newRecipe.ingredients
+                        this.form.steps = newRecipe.steps
+                        this.form.additional_note = newRecipe.additional_note
+                    }
+                    if (newRecipe.image){
+                        this.previewUrl = `/storage/${newRecipe.image}`;
+                    }
+                }
+            }
         }
     }
 </script>
