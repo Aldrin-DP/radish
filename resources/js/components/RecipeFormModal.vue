@@ -111,7 +111,7 @@
                             </div>
                         </div>
 
-                        <div v-if="step === 2">
+                        <div v-if="step === 2" class="overflow-y-auto max-h-[420px]">
                             <div>
                                 <small class="opacity-70 block mb-1">Enter one ingredient per line.</small>
                                 <textarea
@@ -141,7 +141,7 @@
                             </div>
                         </div>
 
-                        <div v-if="step === 3">
+                        <div v-if="step === 3" class="overflow-y-auto max-h-[420px]">
                             <div>
                                 <small class="opacity-70 block mb-1">Number each step in your instructions.</small>
                                 <textarea
@@ -169,7 +169,7 @@
                             </div>
                         </div>
 
-                        <div v-show="step === 4" class="overflow-y-auto max-h-[420px] ">
+                        <div v-show="step === 4" class="overflow-y-auto max-h-[420px]">
                             <div>
                                 <small class="block mb-2">Upload one clear photo of your dish.</small>
 

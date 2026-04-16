@@ -7,6 +7,7 @@
                 :user="user"
                 @reaction-clicked="toggleReaction"
                 @edit-clicked="openEditModal"
+                @delete-clicked="handleDelete"
             />
         </div>
         <div class="lg:w-5/12">
@@ -143,6 +144,26 @@ export default {
             openEditModal(recipe) {
                 this.selectedRecipe = recipe;
                 this.showEditModal = true;
+            },
+            async handleDelete(recipeId) {
+
+                if (!confirm('Are you sure you want to delete this recipe?')) {
+                    return;
+                }
+
+                try {
+                    const response = await axios.delete(`/api/recipes/${recipeId}`, { withCredentials: true });
+
+                    this.toast.success('Recipe deleted successfully!');
+
+                    setTimeout(() => {
+                        this.$router.push(`/my-recipes`);
+                    }, 1000)
+
+
+                } catch (error){
+                    console.error('Error deleting recipe:', error);
+                }
             }
         },
         mounted() {

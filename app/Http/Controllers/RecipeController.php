@@ -112,6 +112,25 @@ class RecipeController extends Controller
         }
     }
 
+    public function destroy($id) {
+
+        try {
+            $recipe = Recipe::findOrFail($id);
+            $recipe->delete();
+
+            return response()->json([
+                'message' => 'Recipe deleted successfully',
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Recipe delete failed',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+
+    }
+
     public function fetchMyRecipes(){
 
         try {
