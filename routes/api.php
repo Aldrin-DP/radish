@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FavoriteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
@@ -17,19 +18,20 @@ Route::get('/recipes', [RecipeController::class, 'index']);
 Route::get('/recipes/{recipeId}', [RecipeController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function (){
+
     Route::get('/user', [UserController::class, 'fetchCurrentUser']);
+
     Route::post('/recipes', [RecipeController::class, 'store']);
-
     Route::put('/recipes/{recipeId}', [RecipeController::class, 'update']);
-
     Route::delete('/recipes/{recipeId}', [RecipeController::class, 'destroy']);
 
     Route::get('/my-recipes', [RecipeController::class, 'fetchMyRecipes']);
 
     Route::post('/recipes/{recipeId}/comments', [CommentController::class, 'store']);
-
     Route::post('/recipes/{recipeId}/reactions', [ReactionController::class, 'store']);
 
+    Route::get('/favorites', [FavoriteController::class, 'index']);
+    Route::post('/favorites/{recipeId}', [FavoriteController::class, 'toggleFavorite']);
 
     Route::post('/logout', [LogoutController::class, 'logout']);
 });

@@ -46,8 +46,9 @@
                             </div>
 
                             <div class="mt-5">
-                                <button class="border w- border-gray-300 px-7 mb-3 py-1 rounded-full hover:bg-[#5FB15F] hover:text-white">
-                                    Sign in
+                                <button :disabled="isLoading"  class="border w- border-gray-300 px-7 mb-3 py-1 rounded-full hover:bg-[#5FB15F] hover:text-white">
+                                    <span v-if="isLoading">Loading...</span>
+                                    <span v-else="isLoading">Sign in</span>
                                 </button>
                                 <span class="block">
                                     No account yet?
@@ -101,11 +102,8 @@ import axios from 'axios';
                         this.toast.success('Login successful!');
                         this.resetForm();
 
-                        setTimeout(() => {
-                            this.$router.push('/').then(() => {
-                                window.location.reload();
-                            });
-                        }, 300);
+                        this.$router.push('/');
+
                     } catch (error) {
                         if (error.response?.data?.errors){
                             this.errors = error.response.data.errors;

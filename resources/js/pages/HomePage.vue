@@ -1,6 +1,25 @@
 <template>
-    <div v-if="isLoading" class="text-center mt-3 animate-pulse">
-        Loading recipes...
+    <div v-if="isLoading" class="mt-3">
+
+        <div class="flex flex-col gap-3 lg:flex-row lg:justify-between lg:items-center">
+
+            <div class="h-6 w-40 bg-gray-200 rounded animate-pulse"></div>
+
+            <div class="flex gap-3 overflow-x-auto my-4">
+                <div v-for="i in 6" :key="i" class="h-6 w-16 bg-gray-200 rounded animate-pulse"></div>
+            </div>
+
+            <div class="h-10 w-full lg:w-64 bg-gray-200 rounded"></div>
+        </div>
+
+        <div class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+            <div v-for="i in 10" :key="i" class="p-3 border rounded">
+                <div class="h-64 bg-gray-200 rounded mb-3 animate-pulse"></div>
+                <div class="h-4 bg-gray-200 rounded w-1/2 mb-2 animate-pulse"></div>
+                <div class="h-4 bg-gray-200 rounded w-full animate-pulse"></div>
+            </div>
+        </div>
+
     </div>
     <div v-else>
         <div class="flex flex-col mt-3 lg:flex-row lg:justify-between lg:items-center ">
@@ -8,7 +27,7 @@
 
             <ul class="flex gap-3 overflow-x-auto scroll-m-1 my-4">
                 <li class="px-1 bg-gray-200">All</li>
-                <li class="px-1 bg-gray-200">Breakfast</li>
+                <li class="px-1 bg-gray-200"    >Breakfast</li>
                 <li>Lunch</li>
                 <li>Dinner</li>
                 <li>Snacks</li>

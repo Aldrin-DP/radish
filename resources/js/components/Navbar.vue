@@ -78,7 +78,7 @@
 
                     <li
                         v-if="isLoggedIn"
-                        class="hover:text-white transition-all duration-300 nav-link"
+                        class="nav-link"
                         active-class="active"
                     >
                         <router-link
@@ -91,13 +91,15 @@
 
                     <li
                         v-if="isLoggedIn"
-                        class="hover:text-white transition-all duration-300"
+                        class="nav-link"
+                        active-class="active"
                     >
-                        <a
-                            class="px-4 py-1 flex"
-                            href="">
+                        <router-link
+                            to="/favorites"
+                            active-class="active"
+                            class="px-4 py-1 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link">
                             Favorites
-                        </a>
+                        </router-link>
                     </li>
                     <li class="px-4 py-1 hover:bg-[#7dc97d] md:hidden">
 

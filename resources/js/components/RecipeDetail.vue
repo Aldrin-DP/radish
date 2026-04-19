@@ -128,10 +128,12 @@
 
                     <div class="mt-5 flex gap-1 justify-center">
                         <button
-
+                            @click="$emit('favorite-clicked', recipe.id)"
                             class=" bg-green-600 px-2 py-2 rounded-full text-slate-200 font-semibold flex gap-1 items-center justify-center"
+                            :class="{'bg-red-400' : isFavorited}"
                         >
-                            <span v-if="!isRaddisher">Add to Favorites</span>
+                            <span v-if="isFavorited">Removed from Favorites</span>
+                            <span v-else>Add to Favorites</span>
                             <Icon icon="uis:favorite" width="24" height="24" />
                         </button>
                         <div
@@ -166,6 +168,10 @@
                 type: Object,
                 required: true
             },
+            isFavorited: {
+                type: Boolean,
+                default: false
+            },
             isLoading: {
                 type: Boolean,
                 default: false
@@ -194,10 +200,6 @@
                 );
             },
             isRaddisher() {
-                 console.log(
-                    'recipe.user_id:', this.recipe?.user_id, typeof this.recipe?.user_id,
-                    'user.id:', this.user?.id, typeof this.user?.id
-                );
                 return Number(this.recipe?.user_id) === Number(this.user?.id);
             }
         }

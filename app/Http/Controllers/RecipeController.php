@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRecipeRequest;
+use App\Models\Favorite;
 use App\Models\Recipe;
 use Illuminate\Http\Request;
 
@@ -100,8 +101,17 @@ class RecipeController extends Controller
             ])
             ->findOrFail($id);
 
+            $user = auth('sanctum')->user();
+
+            $isFavorited = $user
+                ? Favorite::where('recipe_id', $recipe->id)
+                    ->where('user_id', $user->id)
+                    ->exists()
+                : false;
+
             return response()->json([
-                'recipe' => $recipe
+                'recipe' => $recipe,
+                'isFavorited' => $isFavorited
             ], 200);
 
         } catch (\Exception $e) {

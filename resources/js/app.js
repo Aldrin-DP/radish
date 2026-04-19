@@ -8,6 +8,8 @@ import "vue-toastification/dist/index.css";
 
 window.axios = axios;
 
+axios.defaults.withCredentials = true;
+
 // request interceptor -- runs before every request
 axios.interceptors.request.use(
   config => {

@@ -218,19 +218,22 @@
                             >
                                 Previous Step
                             </button>
-                            <button
-                                :disabled="loading"
-                                :class="loading ? 'opacity-50 cursor-not-allowed' : 'bg-[#5FB15F] text-white'"
-                                class="ml-auto border text-sm px-3 py-1 rounded-full bg-[#5FB15F] text-white border-[#5FB15F] hover:bg-green-600"
-                            >
-                                <span v-if="loading">
-                                    Submitting...
-                                </span>
-                                <span v-else-if="step === 4">
-                                    Share Recipe
-                                </span>
-                                <span v-else>Next Step</span>
-                            </button>
+                                <button
+                                    :disabled="loading"
+                                    :class="loading ? 'opacity-50 cursor-not-allowed' : 'bg-[#5FB15F] text-white'"
+                                    class="ml-auto border text-sm px-3 py-1 rounded-full bg-[#5FB15F] text-white border-[#5FB15F] hover:bg-green-600"
+                                >
+                                    <span v-if="loading">
+                                        Submitting...
+                                    </span>
+                                    <span v-else-if="step === 4 && recipe">
+                                        Update
+                                    </span>
+                                    <span v-else-if="step === 4">
+                                        Share Recipe
+                                    </span>
+                                    <span v-else>Next Step</span>
+                                </button>
                         </div>
                     </form>
                 </div>
@@ -430,7 +433,7 @@ import { useToast } from 'vue-toastification';
                         this.form.steps = newRecipe.steps
                         this.form.additional_note = newRecipe.additional_note
                     }
-                    if (newRecipe.image){
+                    if (newRecipe?.image){
                         this.previewUrl = `/storage/${newRecipe.image}`;
                     }
                 }

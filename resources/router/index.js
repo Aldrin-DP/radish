@@ -4,13 +4,16 @@ import LoginPage from '../js/pages/LoginPage.vue'
 import HomePage from '../js/pages/HomePage.vue'
 import RecipeDetailPage from '../js/pages/RecipeDetailPage.vue'
 import MyRecipesPage from '../js/pages/MyRecipesPage.vue'
+import FavoritesPage from '../js/pages/FavoritesPage.vue'
+
 
 const routes = [
   { path: '/', name: 'home', component: HomePage },
   { path: '/register', name: 'register', component: RegisterPage },
   { path: '/login', name: 'login', component: LoginPage },
   { path: '/recipes/:id', name: 'recipeDetail', component: RecipeDetailPage},
-  { path: '/my-recipes', name: 'myRecipes', component: MyRecipesPage }
+  { path: '/my-recipes', name: 'myRecipes', component: MyRecipesPage },
+  { path: '/favorites', name: 'favorites', component: FavoritesPage }
 ]
 
 const router = createRouter({

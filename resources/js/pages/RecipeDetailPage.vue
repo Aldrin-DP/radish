@@ -3,11 +3,13 @@
         <div class="lg:w-7/12">
             <RecipeDetail
                 :recipe="recipe"
+                :isFavorited="isFavorited"
                 :isLoading="isLoading"
                 :user="user"
                 @reaction-clicked="toggleReaction"
                 @edit-clicked="openEditModal"
                 @delete-clicked="handleDelete"
+                @favorite-clicked="toggleFavorite"
             />
         </div>
         <div class="lg:w-5/12">
@@ -57,6 +59,7 @@ export default {
                 isLoading: false,
                 recipe: {},
                 comments: [],
+                isFavorited: null,
                 selectedRecipe: null,
                 showEditModal: false,
             }
@@ -67,6 +70,8 @@ export default {
                 const recipeId = this.$route.params.id;
                 try {
                     const response = await axios.get(`/api/recipes/${recipeId}`);
+                    console.log(response);
+                    this.isFavorited = response.data.isFavorited;
                     this.recipe = response.data.recipe;
                     this.comments = response.data.recipe.comments;
                 } catch (error) {
@@ -163,6 +168,23 @@ export default {
 
                 } catch (error){
                     console.error('Error deleting recipe:', error);
+                }
+            },
+            async toggleFavorite(recipeId) {
+
+                if (!this.isLoggedIn) {
+                    this.toast.error('Login to save your favorite recipes!');
+                    return;
+                }
+
+                try {
+                   const response = await axios.post(`/api/favorites/${recipeId}`, {withCredentials: true});
+                    console.log(response);
+                   this.isFavorited = response.data.isFavorited;
+
+                   console.log('Favorited');
+                } catch (error) {
+                    console.error('Error adding favorites: ', error);
                 }
             }
         },
