@@ -9,13 +9,21 @@ use Illuminate\Http\Request;
 
 class RecipeController extends Controller
 {
-    public function index() {
+    public function index(Request $request) {
 
         try {
-            $recipes = Recipe::with('user')
-                ->withCount('comments')
-                ->latest()
-                ->paginate(24);
+
+            $query = Recipe::query();
+
+            if ($request->filled('search')) {
+                $query->where('recipe_name', 'LIKE', '%' . $request->search . '%')
+                      ->orWhere('ingredients', 'LIKE', '%' . $request->search . '%');
+            }
+
+            $recipes = $query->with('user')
+                             ->withCount('comments')
+                             ->latest()
+                             ->paginate(20);
 
             return response()->json([
                 'recipes' => $recipes,

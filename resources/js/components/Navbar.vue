@@ -70,6 +70,7 @@
                     <li class="nav-link" active-class="active">
                         <router-link
                             to="/"
+                            @click="goHome"
                             active-class="active"
                             class="px-4 py-1 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link">
                             Home
@@ -153,6 +154,9 @@ export default {
                 console.error('Logout error', error);
                 this.toast.error('Error logging out. Please try again');
             }
+        },
+        goHome() {
+            window.dispatchEvent(new Event('home-clicked'));
         }
     },
     created() {

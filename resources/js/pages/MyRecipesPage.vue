@@ -6,11 +6,7 @@
         >
             Add Recipe <Icon icon="carbon:add-filled" width="24" height="24" />
         </button>
-        <div class="flex justify-end mt-3">
-            <SearchBar
-                @search="handleSearch"
-            />
-        </div>
+
         <RecipeFormModal
             v-if="showModal"
             @closeModal="closeModal"

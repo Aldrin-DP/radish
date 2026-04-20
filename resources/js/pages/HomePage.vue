@@ -41,12 +41,13 @@
                 @search="handleSearch"
             />
         </div>
-        <div v-if="filteredRecipes.length < 1" class="font-semibold mt-2 text-lg">
+        <div v-if="isSearching" class="mt-5 text-gray-500 text-md font-semibold" >Searching...</div>
+        <div v-else-if="recipes.length < 1" class="text-md mt-4 text-gray-500 font-semibold">
             We couldn’t find any recipes matching your search.
         </div>
-        <div  class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+        <div v-else class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
             <div
-                v-for="recipe in filteredRecipes"
+                v-for="recipe in recipes"
                 :key="recipe.id"
                 class="cursor-pointer"
                 @click="goToRecipe(recipe.id, recipe.slug)"
@@ -70,9 +71,11 @@
         },
         data() {
             return {
+                allRecipes: [],
                 recipes: [],
                 isLoading: false,
                 searchQuery: '',
+                isSearching: false,
             }
         },
         methods: {
@@ -81,7 +84,8 @@
                 try {
                     const response = await axios.get('/api/recipes');
                     console.log(response.data);
-                    this.recipes = response.data.recipes.data;
+                    this.allRecipes = response.data.recipes.data;
+                    this.recipes = this.allRecipes;
                 } catch (error) {
                     console.error('Error fetching recipes', error);
                 } finally {
@@ -91,23 +95,41 @@
             goToRecipe(recipeId, slug){
                 this.$router.push(`/recipes/${recipeId}-${slug}`);
             },
-            handleSearch(query) {
-                this.searchQuery = query;
+            async handleSearch(query) {
+                this.isSearching = true;
+
+                this.$router.push({
+                    path: '/',
+                    query: { search: query }
+                });
+
+                try {
+                    const response = await axios.get(`/api/recipes?search=${query}`);
+                    this.recipes = response.data.recipes.data;
+                } catch (error) {
+                    console.error('Error fetching recipes', error);
+                } finally {
+                    this.isSearching = false;
+                }
+
             }
         },
         computed: {
-            filteredRecipes(){
-                if (!this.searchQuery) return this.recipes;
 
-                return this.recipes.filter(recipe =>
-                    recipe.recipe_name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-                    recipe.ingredients.toLowerCase().includes(this.searchQuery.toLowerCase())
-                );
-            }
         },
         mounted() {
-            this.fetchRecipes();
-        }
+            this.fetchRecipes().then( () => {
+                const search = this.$route.query.search;
+
+                if (search) {
+                    this.handleSearch(search);
+                }
+            })
+
+            window.addEventListener('home-clicked', () => {
+                this.recipes = this.allRecipes;
+            })
+        },
     }
 
 </script>
