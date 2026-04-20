@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Recipe extends Model
 {
@@ -22,5 +23,21 @@ class Recipe extends Model
 
     public function favorites(){
         return $this->hasMany(Favorite::class);
+    }
+
+    protected static function boot() {
+        parent::boot();
+
+        static::creating(function ($recipe){
+            $slug = Str::slug($recipe->title);
+            $original = $slug;
+            $count = 1;
+
+            while (self::where('slug', $slug)->exists()){
+                $slug = $original . '-' . $count++;
+            }
+
+            $recipe->slug = $slug;
+        });
     }
 }

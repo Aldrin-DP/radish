@@ -1,5 +1,8 @@
 <template>
-    <div class="flex flex-col lg:flex-row">
+    <div v-if="error" class="mt-5 text-gray-500">
+        No recipe found.
+    </div>
+    <div v-else class="flex flex-col lg:flex-row">
         <div class="lg:w-7/12">
             <RecipeDetail
                 :recipe="recipe"
@@ -60,22 +63,27 @@ export default {
                 recipe: {},
                 comments: [],
                 isFavorited: null,
+                error: false,
                 selectedRecipe: null,
                 showEditModal: false,
             }
         },
         methods: {
-            async fetchRecipe() {
+            async fetchRecipe(id, slug) {
                 this.isLoading = true;
-                const recipeId = this.$route.params.id;
+                this.error = false;
+
                 try {
-                    const response = await axios.get(`/api/recipes/${recipeId}`);
+                    const response = await axios.get(`/api/recipes/${id}-${slug}`);
                     console.log(response);
                     this.isFavorited = response.data.isFavorited;
                     this.recipe = response.data.recipe;
                     this.comments = response.data.recipe.comments;
                 } catch (error) {
                     console.error('Error fetching recipe detail', error);
+                    this.recipe = null;
+                    this.isFavorited = false;
+                    this.error = true;
                 } finally {
                     this.isLoading = false;
                 }
@@ -189,7 +197,11 @@ export default {
             }
         },
         mounted() {
-            this.fetchRecipe();
+
+            const id = this.$route.params.id;
+            const slug = this.$route.params.slug;
+
+            this.fetchRecipe(id, slug);
         },
         created() {
             this.toast = useToast();

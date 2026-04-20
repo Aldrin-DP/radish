@@ -18,7 +18,7 @@
             v-for="recipe in favorites"
             :key="recipe.id"
             class="cursor-pointer"
-            @click="goToRecipe(recipe.id)"
+            @click="goToRecipe(recipe.id, recipe.slug)"
         >
             <RecipeCard
                 :recipe="recipe"
@@ -60,8 +60,8 @@
                     this.isLoading = false;
                 }
             },
-            goToRecipe(recipeId){
-                this.$router.push(`/recipes/${recipeId}`);
+            goToRecipe(recipeId, slug){
+                this.$router.push(`/recipes/${recipeId}-${slug}`);
             }
 
         },

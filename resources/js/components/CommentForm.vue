@@ -2,13 +2,13 @@
     <span class="text-red-400"> {{ errors.message }} </span>
     <div class="border border-gray-300 p-3 bg-white opacity-70">
         <form @submit.prevent="addComment">
-            <textarea 
-                name="" 
-                id="" 
+            <textarea
+                name=""
+                id=""
                 rows="3"
                 v-model="message"
                 class="w-full outline-none bg-white"
-                :placeholder="isLoggedIn ? 'Comments containing harmful or inappropriate content may be removed.' : 'Log in to leave a comment'
+                :placeholder="isLoggedIn ? 'Share your thoughts about this recipe.' : 'Log in to leave a comment'
             ">
             </textarea>
             <div class="flex justify-end mt-1">
@@ -29,7 +29,7 @@
                 </button>
             </div>
         </form>
-    </div>   
+    </div>
 </template>
 
 <script>
@@ -59,7 +59,7 @@ import { useToast } from 'vue-toastification';
                 isSubmitting: false,
                 errors: {},
             }
-        }, 
+        },
         methods: {
             async addComment() {
                 this.errors = {};
@@ -78,7 +78,7 @@ import { useToast } from 'vue-toastification';
                     this.isSubmitting = true;
                     try {
                         const recipeId = this.$route.params.id;
-                        const response = await axios.post(`/api/recipes/${recipeId}/comments`, { 
+                        const response = await axios.post(`/api/recipes/${recipeId}/comments`, {
                             message: this.message,
                             parent_id: this.commentId
                         });

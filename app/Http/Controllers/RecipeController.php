@@ -84,7 +84,7 @@ class RecipeController extends Controller
         }
     }
 
-    public function show($id){
+    public function show($id, $slug){
         try {
             $recipe = Recipe::with([
                 'user' => function($q) {
@@ -99,7 +99,9 @@ class RecipeController extends Controller
                 'reactions as laugh_reactions_count' => function($q){ $q->where('reaction_type', 'laugh'); },
                 'reactions as dislike_reactions_count' => function($q){ $q->where('reaction_type', 'dislike'); },
             ])
-            ->findOrFail($id);
+            ->where('id', $id)
+            ->where('slug', $slug)
+            ->firstOrFail();
 
             $user = auth('sanctum')->user();
 

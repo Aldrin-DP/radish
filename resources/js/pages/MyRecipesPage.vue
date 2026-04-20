@@ -37,7 +37,7 @@
             v-for="recipe in myRecipes"
             :key="recipe.id"
             class="cursor-pointer"
-            @click="goToRecipe(recipe.id)"
+            @click="goToRecipe(recipe.id, recipe.slug)"
         >
             <RecipeCard
                 :recipe="recipe"
@@ -88,8 +88,8 @@
             handleRecipeAdded(data) {
                 this.myRecipes.push(data.recipe);
             },
-            goToRecipe(recipeId){
-                this.$router.push(`/recipes/${recipeId}`);
+            goToRecipe(recipeId, slug){
+                this.$router.push(`/recipes/${recipeId}-${slug}`);
             }
         },
         mounted() {

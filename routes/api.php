@@ -15,7 +15,8 @@ Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
 // Recipes
 Route::get('/recipes', [RecipeController::class, 'index']);
-Route::get('/recipes/{recipeId}', [RecipeController::class, 'show']);
+// Route::get('/recipes/{recipeId}', [RecipeController::class, 'show']);
+Route::get('/recipes/{recipeId}-{slug}', [RecipeController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function (){
 
