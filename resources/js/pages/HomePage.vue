@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isLoading" class="mt-3">
+    <div v-if="isInitialLoading" class="mt-3">
 
         <div class="flex flex-col gap-3 lg:flex-row lg:justify-between lg:items-center">
 
@@ -57,6 +57,18 @@
                 />
             </div>
         </div>
+        <div class="mt-8 mb-3 flex justify-center">
+            <button
+                v-if="page < lastPage"
+                @click="loadMoreRecipe"
+                class="uppercase font-bold text-gray-700 tracking-wider"
+            >
+                See more recipe
+            </button>
+            <div v-if="isLoadingMore" class="text-gray-700 font-semibold">
+                Loading...
+            </div>
+        </div>
     </div>
 </template>
 
@@ -73,24 +85,47 @@
             return {
                 allRecipes: [],
                 recipes: [],
-                isLoading: false,
+                isLoadMore: false,
                 searchQuery: '',
+                isInitialLoading: false,
+                isLoadingMore: false,
                 isSearching: false,
+                page: 1,
+                lastPage: 1,
             }
         },
         methods: {
             async fetchRecipes() {
-                this.isLoading = true;
+                if (this.isLoadMore){
+                    this.isLoadingMore = true;
+                } else {
+                    this.isInitialLoading = true;
+                }
+
                 try {
-                    const response = await axios.get('/api/recipes');
+                    const response = await axios.get(`/api/recipes?page=${this.page}`);
+                    console.log(response);
                     console.log(response.data);
-                    this.allRecipes = response.data.recipes.data;
+                    this.allRecipes = [...this.allRecipes, ...response.data.recipes.data];
                     this.recipes = this.allRecipes;
+                    this.lastPage = response.data.recipes.last_page;
+                    console.log(response.data.last_page);
                 } catch (error) {
                     console.error('Error fetching recipes', error);
                 } finally {
-                    this.isLoading = false;
+                    this.isInitialLoading = false;
+                    this.isLoadingMore = false;
+                    this.isLoadMore = false;
                 }
+            },
+            async loadMoreRecipe() {
+
+                if (this.page >= this.lastPage) return;
+
+                this.isLoadMore = true;
+
+                this.page++;
+                await this.fetchRecipes();
             },
             goToRecipe(recipeId, slug){
                 this.$router.push(`/recipes/${recipeId}-${slug}`);

@@ -40,8 +40,8 @@
             />
         </div>
     </div>
-    <div v-else>
-        No recipes found..
+    <div v-else class="mt-5 text-gray-500">
+        You dont have recipes yet.
     </div>
 </template>
 

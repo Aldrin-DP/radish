@@ -29,7 +29,7 @@ class Recipe extends Model
         parent::boot();
 
         static::creating(function ($recipe){
-            $slug = Str::slug($recipe->title);
+            $slug = Str::slug($recipe->recipe_name);
             $original = $slug;
             $count = 1;
 

@@ -296,8 +296,6 @@ import { useToast } from 'vue-toastification';
 
                     const formData = new FormData();
 
-                    formData.append('_method', 'PUT');
-
                     formData.append('recipe_name', this.form.recipe_name);
                     formData.append('description', this.form.description);
                     formData.append('category', this.form.category);
@@ -312,6 +310,7 @@ import { useToast } from 'vue-toastification';
 
                     if (this.recipe) {
                         // edit
+                        formData.append('_method', 'PUT');
                         axios.post(`/api/recipes/${this.recipe.id}`, formData, { withCredentials: true})
                         .then(response => {
                             this.$emit('recipe-updated', response.data);
@@ -326,6 +325,7 @@ import { useToast } from 'vue-toastification';
                             });
                     } else {
                         // add
+
                         axios.post('/api/recipes', formData, { withCredentials: true })
                         .then(response => {
                             this.$emit('recipe-added', response.data);

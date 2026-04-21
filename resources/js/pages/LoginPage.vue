@@ -99,10 +99,13 @@ import axios from 'axios';
                         // store token
                         localStorage.setItem('auth_token', response.data.token);
 
+                        this.$emit('user-reaction-changed');
+
                         this.toast.success('Login successful!');
                         this.resetForm();
 
                         this.$router.push('/');
+
 
                     } catch (error) {
                         if (error.response?.data?.errors){
