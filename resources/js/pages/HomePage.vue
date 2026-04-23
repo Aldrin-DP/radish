@@ -25,17 +25,9 @@
         <div class="flex flex-col mt-3 lg:flex-row lg:justify-between lg:items-center ">
             <h2 class="text-lg font-semibold text-gray-600">All Recipes</h2>
 
-            <ul class="flex gap-3 overflow-x-auto scroll-m-1 my-4">
-                <li class="px-1 bg-gray-200">All</li>
-                <li class="px-1 bg-gray-200"    >Breakfast</li>
-                <li>Lunch</li>
-                <li>Dinner</li>
-                <li>Snacks</li>
-                <li>Beverages</li>
-                <li>Easy</li>
-                <li>Medium</li>
-                <li>Hard</li>
-            </ul>
+            <Filter
+
+            />
 
             <SearchBar
                 @search="handleSearch"
@@ -74,11 +66,13 @@
 
 <script>
     import RecipeCard from '../components/RecipeCard.vue';
+    import Filter from '../components/Filter.vue';
     import SearchBar from '../components/SearchBar.vue';
 
     export default {
         components: {
             RecipeCard,
+            Filter,
             SearchBar
         },
         data() {

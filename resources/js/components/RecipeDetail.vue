@@ -68,9 +68,11 @@
                             @click="$emit('reaction-clicked', 'love')"
                             class="border px-2 py-1 bg-slate-200 rounded cursor-pointer"
                             :class="{
-                                'text-green-500': userReaction?.reaction_type === 'love',
-                                'border-green-500': userReaction?.reaction_type === 'love'
+                                'text-green-500': userReaction === 'love',
+                                'border-green-500': userReaction === 'love',
+                                'opacity-50': isReacting
                             }"
+                            :style="{pointerEvents: isReacting ? 'none' : 'auto'}"
                         >
                             <button class="flex gap-2 items-center ">
                                 <Icon icon="fluent-emoji-flat:red-heart" width="26" height="26" />
@@ -83,9 +85,11 @@
                             @click="$emit('reaction-clicked', 'fire')"
                             class="border px-2 py-1 bg-slate-200 rounded cursor-pointer text-gre"
                             :class="{
-                                'text-green-500': userReaction?.reaction_type === 'fire',
-                                'border-green-500': userReaction?.reaction_type === 'fire'
+                                'text-green-500': userReaction === 'fire',
+                                'border-green-500': userReaction === 'fire',
+                                'opacity-50': isReacting
                             }"
+                            :style="{pointerEvents: isReacting ? 'none' : 'auto'}"
                         >
                             <button class="flex gap-2 items-center ">
                                 <Icon icon="noto:face-savoring-food" width="26" height="26" />
@@ -98,9 +102,11 @@
                             @click="$emit('reaction-clicked', 'laugh')"
                             class="border px-2 py-1 bg-slate-200 rounded cursor-pointer"
                             :class="{
-                                'text-green-500': userReaction?.reaction_type === 'laugh',
-                                'border-green-500': userReaction?.reaction_type === 'laugh'
+                                'text-green-500': userReaction === 'laugh',
+                                'border-green-500': userReaction === 'laugh',
+                                'opacity-50': isReacting
                             }"
+                            :style="{pointerEvents: isReacting ? 'none' : 'auto'}"
                         >
                             <button class="flex gap-2 items-center ">
                                 <Icon icon="noto:rolling-on-the-floor-laughing" width="26" height="26" />
@@ -113,9 +119,11 @@
                             @click="$emit('reaction-clicked', 'dislike')"
                             class="border px-2 py-1 bg-slate-200 rounded cursor-pointer"
                             :class="{
-                                'text-green-500': userReaction?.reaction_type === 'dislike',
-                                'border-green-500': userReaction?.reaction_type === 'dislike'
+                                'text-green-500': userReaction === 'dislike',
+                                'border-green-500': userReaction === 'dislike',
+                                'opacity-50': isReacting
                             }"
+                            :style="{pointerEvents: isReacting ? 'none' : 'auto'}"
                         >
                             <button class="flex gap-2 items-center ">
                                 <Icon icon="fluent-emoji-flat:thumbs-down" width="26" height="26" />
@@ -179,6 +187,14 @@
             user: {
                 type: Object,
                 required: true,
+            },
+            userReaction: {
+                type: String,
+                default: null
+            },
+            isReacting: {
+                type: Boolean,
+                default: false
             }
         },
         watch: {
@@ -192,13 +208,6 @@
             }
         },
         computed: {
-            userReaction() {
-                if (!this.user?.reactions) return null;
-
-                return this.user.reactions.find(reaction =>
-                    reaction.recipe_id === Number(this.$route.params.id)
-                );
-            },
             isRaddisher() {
                 return Number(this.recipe?.user_id) === Number(this.user?.id);
             }

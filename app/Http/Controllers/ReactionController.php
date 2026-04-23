@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class ReactionController extends Controller
 {
     public function store(StoreReactionRequest $request, $recipeId) {
-        
+
         try {
             $reactionType = $request['reaction_type'];
 
@@ -20,10 +20,11 @@ class ReactionController extends Controller
 
             if ($existingReaction && $existingReaction->reaction_type === $reactionType){
                 $existingReaction->delete();
+                $wasRemoved = true;
             } else if ($existingReaction && $existingReaction->reaction_type !== $reactionType){
                 $existingReaction->reaction_type = $reactionType;
                 $existingReaction->save();
-                $wasRemoved = true;
+                $wasRemoved = false;
             } else {
                 Reaction::create([
                     'recipe_id' => $recipeId,
@@ -31,7 +32,7 @@ class ReactionController extends Controller
                     'reaction_type' => $reactionType
                 ]);
             }
-            
+
             $reactionCount = [
                 'love' => Reaction::where('reaction_type', 'love')
                                 ->where('recipe_id', $recipeId)
@@ -59,6 +60,6 @@ class ReactionController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-         
+
     }
 }

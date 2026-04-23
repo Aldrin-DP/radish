@@ -9,6 +9,8 @@
                 :isFavorited="isFavorited"
                 :isLoading="isLoading"
                 :user="user"
+                :userReaction="userReaction"
+                :isReacting="isReacting"
                 @reaction-clicked="toggleReaction"
                 @edit-clicked="openEditModal"
                 @delete-clicked="handleDelete"
@@ -64,8 +66,11 @@ export default {
                 comments: [],
                 isFavorited: null,
                 error: false,
+                isReacting: false,
                 selectedRecipe: null,
                 showEditModal: false,
+                userReaction: '',
+                existingReaction: null,
             }
         },
         methods: {
@@ -76,9 +81,14 @@ export default {
                 try {
                     const response = await axios.get(`/api/recipes/${id}-${slug}`);
                     console.log(response);
+
                     this.isFavorited = response.data.isFavorited;
                     this.recipe = response.data.recipe;
                     this.comments = response.data.recipe.comments;
+
+                    const existing = this.user.reactions.find(r => r.recipe_id === this.recipe.id);
+                    this.userReaction = existing ? existing.reaction_type : null;
+
                 } catch (error) {
                     console.error('Error fetching recipe detail', error);
                     this.recipe = null;
@@ -110,19 +120,35 @@ export default {
                     this.toast.error('Please login to react');
                     return;
                 }
+                if (this.isReacting) return;
+                this.isReacting = true;
+
+                let selectedReaction = null;
+                const existing = this.user.reactions.find((r) => r.recipe_id === this.recipe.id);
+
+                if (existing) {
+                    selectedReaction = existing.reaction_type;
+                    if (selectedReaction === reactionType) {
+                        this.recipe[selectedReaction + '_reactions_count']--;
+                        selectedReaction = null;
+                    } else {
+                        this.recipe[selectedReaction + '_reactions_count']--;
+                        this.recipe[reactionType + '_reactions_count']++;
+                        selectedReaction = reactionType;
+                    }
+                } else {
+                    this.recipe[reactionType + '_reactions_count']++;
+                    selectedReaction = reactionType;
+                }
+                this.userReaction = selectedReaction;
 
                 try {
                     const recipeId = this.$route.params.id;
                     const response = await axios.post(`/api/recipes/${recipeId}/reactions`, {
                         reaction_type: reactionType
                     });
-                    this.toast.success('Reaction saved!');
-                    this.recipe.love_reactions_count = response.data.counts.love;
-                    this.recipe.fire_reactions_count = response.data.counts.fire;
-                    this.recipe.laugh_reactions_count = response.data.counts.laugh;
-                    this.recipe.dislike_reactions_count = response.data.counts.dislike;
 
-                     this.$emit('user-reaction-changed');
+                    this.$emit('user-reaction-changed');
 
                     const existingReactionIndex = this.user.reactions.findIndex(
                         r => r.recipe_id === Number(this.$route.params.id)
@@ -149,6 +175,8 @@ export default {
                 } catch (error){
                     console.error('Reaction failed', error);
                     this.toast.error('Failed to save reaction');
+                } finally {
+                    this.isReacting = false;
                 }
             },
             handleRecipeUpdated(updatedRecipe) {
