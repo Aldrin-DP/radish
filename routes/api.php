@@ -9,7 +9,6 @@ use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\RegisterController;
-use App\Models\Recipe;
 
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
@@ -18,15 +17,17 @@ Route::get('/recipes', [RecipeController::class, 'index']);
 // Route::get('/recipes/{recipeId}', [RecipeController::class, 'show']);
 Route::get('/recipes/{recipeId}-{slug}', [RecipeController::class, 'show']);
 
+Route::get('/user/{slug}', [UserController::class, 'show']);
+
 Route::middleware('auth:sanctum')->group(function (){
 
-    Route::get('/user', [UserController::class, 'fetchCurrentUser']);
+    Route::get('/me', [UserController::class, 'getCurrentUser']);
 
     Route::post('/recipes', [RecipeController::class, 'store']);
     Route::put('/recipes/{recipeId}', [RecipeController::class, 'update']);
     Route::delete('/recipes/{recipeId}', [RecipeController::class, 'destroy']);
 
-    Route::get('/my-recipes', [RecipeController::class, 'fetchMyRecipes']);
+    Route::get('/my-recipes', [RecipeController::class, 'getMyRecipes']);
 
     Route::post('/recipes/{recipeId}/comments', [CommentController::class, 'store']);
     Route::post('/recipes/{recipeId}/reactions', [ReactionController::class, 'store']);

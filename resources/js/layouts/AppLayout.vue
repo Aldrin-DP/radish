@@ -37,7 +37,7 @@ export default {
         async fetchCurrentUser() {
 
             try {
-                const response = await axios.get('/api/user');
+                const response = await axios.get('/api/me');
                 this.user = response.data.user;
                 this.isLoggedIn = true;
             } catch (error) {

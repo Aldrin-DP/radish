@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
-use App\Models\User;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function fetchCurrentUser() {
+    public function getCurrentUser() {
 
         try {
             $user = auth()->user()->load('reactions');
@@ -18,7 +16,7 @@ class UserController extends Controller
                 'user' => new UserResource($user)
             ], 200);
 
-        } catch (\Exception $e) {   
+        } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Failed fetching current user.',
                 'error' => $e->getMessage()

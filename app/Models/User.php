@@ -3,16 +3,19 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Attributes\Boot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
-    
+
     use HasApiTokens;
 
     /**
@@ -21,10 +24,27 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $guarded = [];
-    
+
     // public function profile() {
     //     return $this->hasOne(Profile::class);
     // }
+
+    protected static function boot() {
+        parent::boot();
+
+        static::creating(function ($user){
+            $slug = Str::slug($user->firstname . ' ' . $user->lastname);
+            $original = $slug;
+            $count = 1;
+
+            while (self::where('slug', $slug)->exists()){
+                $slug = $original . '-' . $count++;
+            }
+
+            $user->slug = $slug;
+        });
+    }
+
 
     public function recipes() {
         return $this->hasMany(Recipe::class);

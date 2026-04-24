@@ -161,7 +161,7 @@ class RecipeController extends Controller
 
     }
 
-    public function fetchMyRecipes(){
+    public function getMyRecipes(){
 
         try {
             $myRecipes = Recipe::with('user')
