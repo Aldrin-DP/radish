@@ -15,9 +15,19 @@ class RecipeController extends Controller
 
             $query = Recipe::query();
 
-            if ($request->filled('search')) {
-                $query->where('recipe_name', 'LIKE', '%' . $request->search . '%')
+           if ($request->filled('search')) {
+                $query->where(function ($q) use ($request){
+                    $q->where('recipe_name', 'LIKE', '%' . $request->search . '%')
                       ->orWhere('ingredients', 'LIKE', '%' . $request->search . '%');
+                });
+            }
+
+            if ($request->filled('category')) {
+                $query->where('category', $request->category);
+            }
+
+            if ($request->filled('difficulty')) {
+                $query->where('difficulty', $request->difficulty);
             }
 
             $recipes = $query->with('user')

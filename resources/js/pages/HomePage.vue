@@ -6,14 +6,14 @@
             <div class="h-6 w-40 bg-gray-200 rounded animate-pulse"></div>
 
             <div class="flex gap-3 overflow-x-auto my-4">
-                <div v-for="i in 6" :key="i" class="h-6 w-16 bg-gray-200 rounded animate-pulse"></div>
+                <div v-for="(i, index) in 2" :key="index" class="h-6 w-32 bg-gray-200 rounded animate-pulse"></div>
             </div>
 
             <div class="h-10 w-full lg:w-64 bg-gray-200 rounded"></div>
         </div>
 
         <div class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
-            <div v-for="i in 10" :key="i" class="p-3 border rounded">
+            <div v-for="(i, index) in 10" :key="index" class="p-3 border rounded">
                 <div class="h-64 bg-gray-200 rounded mb-3 animate-pulse"></div>
                 <div class="h-4 bg-gray-200 rounded w-1/2 mb-2 animate-pulse"></div>
                 <div class="h-4 bg-gray-200 rounded w-full animate-pulse"></div>
@@ -26,7 +26,9 @@
             <h2 class="text-lg font-semibold text-gray-600">All Recipes</h2>
 
             <Filter
-
+                :selectedCategory="selectedCategory"
+                :selectedDifficulty="selectedDifficulty"
+                @filter-changed="handleFilterChanged"
             />
 
             <SearchBar
@@ -86,6 +88,8 @@
                 isSearching: false,
                 page: 1,
                 lastPage: 1,
+                selectedCategory: '',
+                selectedDifficulty: ''
             }
         },
         methods: {
@@ -125,20 +129,63 @@
                 this.$router.push(`/recipes/${recipeId}-${slug}`);
             },
             async handleSearch(query) {
+                this.searchQuery = query;
                 this.isSearching = true;
 
                 this.$router.push({
                     path: '/',
-                    query: { search: query }
+                    query: {
+                        search: query,
+                        category: this.selectedCategory,
+                        difficulty: this.selectedDifficulty
+                    }
                 });
 
                 try {
-                    const response = await axios.get(`/api/recipes?search=${query}`);
+                    const response = await axios.get(`/api/recipes`, {
+                        params: {
+                            search: query,
+                            category: this.selectedCategory,
+                            difficulty: this.selectedDifficulty
+                        }
+                    });
                     this.recipes = response.data.recipes.data;
                 } catch (error) {
                     console.error('Error fetching recipes', error);
                 } finally {
                     this.isSearching = false;
+                }
+
+            },
+            handleFilterChanged(filters) {
+                this.selectedCategory = filters.category;
+                this.selectedDifficulty = filters.difficulty;
+
+                this.$router.push({
+                    path: '/',
+                    query: {
+                        search: this.searchQuery,
+                        category: filters.category,
+                        difficulty: filters.difficulty
+                    }
+                });
+
+                this.filterRecipes();
+            },
+            async filterRecipes() {
+                try {
+                    const response = await axios.get(`/api/recipes`, {
+                        params: {
+                            category: this.selectedCategory,
+                            difficulty: this.selectedDifficulty,
+                            search: this.searchQuery
+                        }
+                    });
+                    this.recipes = response.data.recipes.data;
+                    this.lastPage = response.data.recipes.last_page;
+                    this.page = 1;
+                } catch (error) {
+                    console.error('Filter Failed', error);
                 }
 
             }
@@ -147,16 +194,23 @@
 
         },
         mounted() {
-            this.fetchRecipes().then( () => {
-                const search = this.$route.query.search;
 
-                if (search) {
-                    this.handleSearch(search);
+            this.selectedCategory = this.$route.query.category || '';
+            this.selectedDifficulty = this.$route.query.difficulty || '';
+            this.searchQuery = this.$route.query.search || '';
+
+            this.fetchRecipes().then( () => {
+                if (this.searchQuery || this.selectedCategory || this.selectedDifficulty) {
+                    this.filterRecipes();
                 }
             })
 
             window.addEventListener('home-clicked', () => {
                 this.recipes = this.allRecipes;
+
+                this.searchQuery = '';
+                this.selectedCategory = '';
+                this.selectedDifficulty = '';
             })
         },
     }
