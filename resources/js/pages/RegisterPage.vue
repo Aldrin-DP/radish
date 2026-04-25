@@ -81,7 +81,7 @@
                                 <button
                                     :class="isLoading ? 'disabled bg-gray-500 opacity-60' : ''"
                                     class="border w- border-gray-300 px-7 mb-3 py-1 rounded-full hover:bg-[#5FB15F] hover:text-white">
-                                    {{ isLoading ? 'Submitting...' : 'Register' }}
+                                    {{ isLoading ? 'Processing...' : 'Register' }}
                                 </button>
                                 <span class="block">
                                     Have an account?

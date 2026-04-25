@@ -46,9 +46,12 @@
                             </div>
 
                             <div class="mt-5">
-                                <button :disabled="isLoading"  class="border w- border-gray-300 px-7 mb-3 py-1 rounded-full hover:bg-[#5FB15F] hover:text-white">
-                                    <span v-if="isLoading">Loading...</span>
-                                    <span v-else="isLoading">Sign in</span>
+                                <button
+                                    :disabled="isLoading"
+                                    :class="{ 'opacity-50': isLoading }"
+                                    class="border w- border-gray-300 px-7 mb-3 py-1 rounded-full hover:bg-[#5FB15F] hover:text-white"
+                                >
+                                    {{ isLoading ? 'Signing in...' : 'Sign in' }}
                                 </button>
                                 <span class="block">
                                     No account yet?
@@ -101,7 +104,6 @@ import axios from 'axios';
 
                         this.$emit('user-reaction-changed');
 
-                        this.toast.success('Login successful!');
                         this.resetForm();
 
                         this.$router.push('/');

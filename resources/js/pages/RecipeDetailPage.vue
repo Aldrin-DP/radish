@@ -55,8 +55,7 @@ export default {
                 default: false
             },
             user: {
-                type: Object,
-                required: true,
+                type: Object
             }
         },
         data() {
@@ -86,7 +85,7 @@ export default {
                     this.recipe = response.data.recipe;
                     this.comments = response.data.recipe.comments;
 
-                    const existing = this.user.reactions.find(r => r.recipe_id === this.recipe.id);
+                    const existing = this.user?.reactions.find(r => r.recipe_id === this.recipe.id);
                     this.userReaction = existing ? existing.reaction_type : null;
 
                 } catch (error) {
@@ -117,7 +116,7 @@ export default {
             async toggleReaction(reactionType) {
 
                 if (!this.isLoggedIn){
-                    this.toast.error('Please login to react');
+                    this.toast.error('Log in to react');
                     return;
                 }
                 if (this.isReacting) return;

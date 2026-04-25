@@ -17,11 +17,12 @@
         </div>
 
         <div class="flex flex-col">
-            <h4 class="text-center text-gray-800 font-semibold h-14 mt-3 mb-5 text-lg">{{ recipe.recipe_name }}</h4>
+            <h4 class="text-center text-gray-800 font-semibold h-14 mt-3 mb-5 text-lg truncate">{{ recipe.recipe_name }}</h4>
 
             <div>
 
-                <p class="mb-2 text-gray-700">
+                <p  v-if="recipe.user"
+                    class="mb-2 text-gray-700">
                     {{ recipe?.user?.firstname || 'You' }} {{ recipe?.user?.lastname || ''}}
                 </p>
 

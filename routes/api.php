@@ -17,7 +17,7 @@ Route::get('/recipes', [RecipeController::class, 'index']);
 // Route::get('/recipes/{recipeId}', [RecipeController::class, 'show']);
 Route::get('/recipes/{recipeId}-{slug}', [RecipeController::class, 'show']);
 
-Route::get('/user/{slug}', [UserController::class, 'show']);
+Route::get('/users/{slug}', [UserController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function (){
 

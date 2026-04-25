@@ -32,11 +32,13 @@
 
                     <button
                         @click.prevent="handleLogout"
+                        :disabled="isLoading"
+                        :class="{ 'opacity-50': isLoading }"
                         v-if="isLoggedIn"
                         type="submit"
                         class="border mb-2 border-gray-300 px-3 py-1 rounded-full hover:bg-[#E94E63] hover:text-white hover:border-[#E94E63] transition-colors duration-300"
                     >
-                        Log out
+                        {{  isLoading ? 'Logging out...' : 'Log out'  }}
                     </button>
                 </div>
             </div>
@@ -114,8 +116,10 @@
 
                         <button
                             v-if="isLoggedIn"
+                            :disabled="isLoading"
+                            :class="{ 'opacity-50': isLoading }"
                             @click.prevent="handleLogout" type="submit" class="">
-                                Log out
+                                {{  isLoading ? 'Logging out...' : 'Log out'  }}
                         </button>
 
                     </li>
@@ -138,11 +142,13 @@ export default {
     ],
     data() {
         return {
-            open: false
+            open: false,
+            isLoading: false
         }
     },
     methods: {
         async handleLogout() {
+            this.isLoading = true;
             try {
                 const response = await axios.post('/api/logout');
                 // remove token
@@ -153,6 +159,8 @@ export default {
             } catch (error){
                 console.error('Logout error', error);
                 this.toast.error('Error logging out. Please try again');
+            } finally {
+                this.isLoading = false;
             }
         },
         goHome() {

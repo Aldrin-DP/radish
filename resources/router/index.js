@@ -5,6 +5,7 @@ import HomePage from '../js/pages/HomePage.vue'
 import RecipeDetailPage from '../js/pages/RecipeDetailPage.vue'
 import MyRecipesPage from '../js/pages/MyRecipesPage.vue'
 import FavoritesPage from '../js/pages/FavoritesPage.vue'
+import ProfilePage from '../js/pages/ProfilePage.vue'
 
 
 const routes = [
@@ -12,13 +13,24 @@ const routes = [
   { path: '/register', name: 'register', component: RegisterPage },
   { path: '/login', name: 'login', component: LoginPage },
   { path: '/recipes/:id-:slug', name: 'recipeDetail', component: RecipeDetailPage},
-  { path: '/my-recipes', name: 'myRecipes', component: MyRecipesPage },
-  { path: '/favorites', name: 'favorites', component: FavoritesPage }
+  { path: '/my-recipes', name: 'myRecipes', component: MyRecipesPage, meta: { requiresAuth: true } },
+  { path: '/favorites', name: 'favorites', component: FavoritesPage, meta: { requiresAuth: true } },
+  { path: '/raddisher/:slug', name: 'raddisher', component: ProfilePage }
 ]
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
 })
+
+router.beforeEach((to, from, next) => {
+    const isLoggedIn = !!localStorage.getItem('auth_token');
+
+    if (to.meta.requiresAuth && !isLoggedIn) {
+        next('/login');
+    } else {
+        next()
+    }
+});
 
 export default router
