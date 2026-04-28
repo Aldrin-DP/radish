@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["nodejs", "npm", "php82"]
+nixPkgs = ["nodejs", "npm", "php83", "php83Extensions.pdo", "php83Extensions.pdo_mysql", "php83Extensions.mbstring", "php83Extensions.tokenizer", "php83Extensions.xml", "php83Extensions.curl", "php83Extensions.fileinfo"]
 
 [phases.install]
 cmds = ["composer install --no-dev --optimize-autoloader", "npm ci --prefer-offline"]
