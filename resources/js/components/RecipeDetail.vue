@@ -15,7 +15,7 @@
             <div class="">
                 <div class="aspect-[2/2] mt-1 lg:w-full text-center">
                     <img
-                        :src="imagePath + recipe.image"
+                        :src="recipe.image?.startsWith('http') ? recipe.image : imagePath + recipe.image"
                         :alt="recipe.recipe_name"
                         class="h-full w-full object-cover rounded-lg"
                     >

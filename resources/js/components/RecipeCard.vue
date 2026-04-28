@@ -8,7 +8,7 @@
                         class="absolute rounded-full right-2 top-2 bg-green-400 px-1 text-xs text-green-800 font-bold">TOP</p> -->
                 <div class="aspect-[2/2]">
                     <img
-                        :src="imagePath + recipe.image"
+                        :src="recipe.image.startsWith('http') ? recipe.image : imagePath + recipe.image"
                         alt=""
                         class="w-full h-full object-cover rounded transition-all duration-300">
                 </div>

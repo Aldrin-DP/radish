@@ -53,8 +53,19 @@ class RecipeController extends Controller
             $validated = $request->validated();
 
             if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('recipes', 'public');
-                $validated['image'] = $imagePath;
+
+                $cloudinary = new \Cloudinary\Cloudinary([
+                    'cloud' => [
+                        'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                        'api_key' => env('CLOUDINARY_API_KEY'),
+                        'api_secret' => env('CLOUDINARY_API_SECRET'),
+                    ]
+                ]);
+
+                $result = $cloudinary->uploadApi()->upload(
+                    $request->file('image')->getRealPath()
+                );
+                $validated['image'] = $result['secure_url'];
             }
 
             $validated['user_id'] = auth()->id();
@@ -83,8 +94,18 @@ class RecipeController extends Controller
             $validated = $request->validated();
 
              if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('recipes', 'public');
-                $validated['image'] = $imagePath;
+                $cloudinary = new \Cloudinary\Cloudinary([
+                    'cloud' => [
+                        'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
+                        'api_key' => env('CLOUDINARY_API_KEY'),
+                        'api_secret' => env('CLOUDINARY_API_SECRET'),
+                    ]
+                ]);
+
+                $result = $cloudinary->uploadApi()->upload(
+                    $request->file('image')->getRealPath()
+                );
+                $validated['image'] = $result['secure_url'];
             }
 
             $recipe->update($validated);
