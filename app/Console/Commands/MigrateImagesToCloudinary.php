@@ -19,8 +19,7 @@ class MigrateImagesToCloudinary extends Command
                 $localPath = storage_path('app/public/' . $recipe->image);
                 
                 if (file_exists($localPath)) {
-                    
-
+                
                     $cloudinary = new Cloudinary([
                         'cloud' => [
                             'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
@@ -29,9 +28,9 @@ class MigrateImagesToCloudinary extends Command
                         ]
                     ]);
 
-    $result = $cloudinary->uploadApi()->upload($localPath);
-    $recipe->update(['image' => $result['secure_url']]);
-                    } else {
+                    $result = $cloudinary->uploadApi()->upload($localPath);
+                    $recipe->update(['image' => $result['secure_url']]);
+                } else {
                     $this->warn("⚠️ File not found: {$recipe->recipe_name}");
                 }
 
