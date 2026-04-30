@@ -8,11 +8,15 @@
                     alt="Radish. logo"
                     width="60px"
                 >
-                <a href="">
+                <router-link
+                    to="/"
+                    @click="goHome"
+                    class="cursor-pointer"
+                >
                     <h3 class="text-4xl font-sheppards text-[#E94E63]">
                         Ra<span class="text-[#5FB15F]">dish.</span>
                     </h3>
-                </a>
+                </router-link>
             </div>
 
             <div>
@@ -71,47 +75,47 @@
                 :class="{ 'hidden': !open, 'block': open }"
             >
                 <ul class="cursor-pointer border md:flex md:border-none">
-                    <li class="nav-link py-1" active-class="active">
+                    <li class="nav-link" active-class="active">
                         <router-link
                             to="/"
                             @click="goHome"
                             active-class="active"
-                            class="px-4 py-1 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link">
+                            class="px-4 py-2 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link">
                             Home
                         </router-link>
                     </li>
 
                     <li
                         v-if="isLoggedIn"
-                        class="nav-link py-1"
+                        class="nav-link"
                         active-class="active"
                     >
                         <router-link
                             to="/my-recipes"
                             active-class="active"
-                            class="px-4 py-1 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link">
+                            class="px-4 py-2 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link">
                             My Recipes
                         </router-link>
                     </li>
 
                     <li
                         v-if="isLoggedIn"
-                        class="nav-link py-1"
+                        class="nav-link"
                         active-class="active"
                     >
                         <router-link
                             to="/favorites"
                             active-class="active"
-                            class="px-4 py-1 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link">
+                            class="px-4 py-2 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link">
                             Favorites
                         </router-link>
                     </li>
-                    <li class="px-4 py-1 hover:bg-[#7dc97d] md:hidden">
+                    <li class="md:hidden">
 
                         <router-link
                             to="/login"
                             v-if="!isLoggedIn"
-                            class="px-4 py-1 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link md:border md:border-gray-300 md:px-3 md:py-1 md:rounded-full"
+                            class="md:px-4 py-2 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link md:border md:border-gray-300 md:py-1 md:rounded-full"
                         >
                             Log in
                         </router-link>
@@ -121,7 +125,7 @@
                             :disabled="isLoading"
                             :class="{ 'opacity-50': isLoading }"
                             @click.prevent="handleLogout" type="submit"
-                            class="px-4 py-1 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link"
+                            class="md:px-4 py-1 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link"
                             >
                                 {{  isLoading ? 'Logging out...' : 'Log out'  }}
                         </button>
