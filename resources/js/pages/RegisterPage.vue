@@ -1,5 +1,5 @@
 <template>
-    <div class="px-2 py-5 md:p-5 w-full lg:w-8/12 m-auto">
+    <div class="py-5 md:p-5 w-full lg:w-8/12 m-auto">
         <div class="flex flex-col lg:flex-row border shadow-sm">
             <div class="w-full lg:w-3/6 p-3 flex items-center justify-center relative">
                 <img src="/public/images/logo.png" alt="" width="100px">

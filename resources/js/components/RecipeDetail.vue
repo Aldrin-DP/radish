@@ -21,7 +21,7 @@
                     >
                 </div>
                 <div class="sm:mt-1 lg:w-full">
-                    <div class="flex gap-2 sm:gap-5 items-center justify-center sm:m-5">
+                    <div class="flex mt-5 gap-2 sm:gap-5 items-center justify-center">
                         <div>
                             <p :class="{
                                 'bg-green-100 text-green-700': recipe.difficulty == 'easy',

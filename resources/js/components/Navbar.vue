@@ -125,7 +125,7 @@
                             :disabled="isLoading"
                             :class="{ 'opacity-50': isLoading }"
                             @click.prevent="handleLogout" type="submit"
-                            class="ml-4 rounded-full px-4 py-1 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link"
+                            class="ml-4 border mb-2 rounded-full px-4 py-1 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link"
                             >
                                 {{  isLoading ? 'Logging out...' : 'Log out'  }}
                         </button>
