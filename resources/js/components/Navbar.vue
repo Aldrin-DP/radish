@@ -46,15 +46,17 @@
 
         <div class="md:flex justify-between flex-row-reverse bg-white bg-opacity-50">
 
-            <div class="px-3 py-2 bg-white bg-opacity-50 flex justify-between items-center">
+            <div
+                v-if="isLoggedIn"
+                class="px-3 py-2 bg-white bg-opacity-50 flex justify-between items-center">
                 <div class="flex gap-2 items-center">
-                    <img v-if="isLoggedIn"
+                    <img
                         class="rounded-full"
                         src="/public/images/placeholder.jpg"
                         alt="Profile photo"
                         width="40px"
                     >
-                    <p v-if="isLoggedIn">
+                    <p>
                         {{ user.firstname }} {{ user.lastname }}
                     </p>
                 </div>
@@ -69,7 +71,7 @@
                 :class="{ 'hidden': !open, 'block': open }"
             >
                 <ul class="cursor-pointer border md:flex md:border-none">
-                    <li class="nav-link" active-class="active">
+                    <li class="nav-link py-1" active-class="active">
                         <router-link
                             to="/"
                             @click="goHome"
@@ -81,7 +83,7 @@
 
                     <li
                         v-if="isLoggedIn"
-                        class="nav-link"
+                        class="nav-link py-1"
                         active-class="active"
                     >
                         <router-link
@@ -94,7 +96,7 @@
 
                     <li
                         v-if="isLoggedIn"
-                        class="nav-link"
+                        class="nav-link py-1"
                         active-class="active"
                     >
                         <router-link
@@ -109,7 +111,7 @@
                         <router-link
                             to="/login"
                             v-if="!isLoggedIn"
-                            class="md:border border-gray-300 md:px-3 md:py-1 md:rounded-full"
+                            class="px-4 py-1 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link md:border md:border-gray-300 md:px-3 md:py-1 md:rounded-full"
                         >
                             Log in
                         </router-link>
@@ -118,7 +120,9 @@
                             v-if="isLoggedIn"
                             :disabled="isLoading"
                             :class="{ 'opacity-50': isLoading }"
-                            @click.prevent="handleLogout" type="submit" class="">
+                            @click.prevent="handleLogout" type="submit"
+                            class="px-4 py-1 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link"
+                            >
                                 {{  isLoading ? 'Logging out...' : 'Log out'  }}
                         </button>
 
