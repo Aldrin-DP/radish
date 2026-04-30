@@ -23,12 +23,13 @@
     </div>
     <div v-else>
         <div class="flex flex-col mt-3 lg:flex-row lg:justify-between lg:items-center ">
-            <h2 class="text-lg font-semibold text-gray-600">All Recipes</h2>
+            <h2 class="text-lg font-semibold text-gray-600 mb-2">All Recipes</h2>
 
             <Filter
                 :selectedCategory="selectedCategory"
                 :selectedDifficulty="selectedDifficulty"
                 @filter-changed="handleFilterChanged"
+                class="mb-2"
             />
 
             <SearchBar

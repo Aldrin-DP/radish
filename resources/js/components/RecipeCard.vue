@@ -17,7 +17,7 @@
         </div>
 
         <div class="flex flex-col">
-            <h4 class="text-center text-gray-800 font-semibold h-14 mt-3 mb-5 text-lg truncate">{{ recipe.recipe_name }}</h4>
+            <h4 class="text-center text-gray-800 font-semibold h-14 mt-3 mb-2 text-lg truncate">{{ recipe.recipe_name }}</h4>
 
             <div>
 
