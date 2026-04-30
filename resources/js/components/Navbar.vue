@@ -115,7 +115,7 @@
                         <router-link
                             to="/login"
                             v-if="!isLoggedIn"
-                            class="md:px-4 py-2 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link md:border md:border-gray-300 md:py-1 md:rounded-full"
+                            class="px-4 py-2 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link md:border md:border-gray-300 md:py-1 md:rounded-full"
                         >
                             Log in
                         </router-link>
@@ -125,7 +125,7 @@
                             :disabled="isLoading"
                             :class="{ 'opacity-50': isLoading }"
                             @click.prevent="handleLogout" type="submit"
-                            class="md:px-4 py-1 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link"
+                            class="ml-4 rounded-full px-4 py-1 flex hover:bg-[#53af53] hover:text-white transition-all duration-300 nav-link"
                             >
                                 {{  isLoading ? 'Logging out...' : 'Log out'  }}
                         </button>
