@@ -43,7 +43,7 @@
                     </div>
                     <div
                         v-if="recipe.description"
-                        class="mt-5 sm:mt-0 text-justify"
+                        class="mt-5 text-justify"
                     >
                         {{ recipe.description }}
                     </div>
