@@ -103,12 +103,9 @@
 
                 try {
                     const response = await axios.get(`/api/recipes?page=${this.page}`);
-                    console.log(response);
-                    console.log(response.data);
                     this.allRecipes = [...this.allRecipes, ...response.data.recipes.data];
                     this.recipes = this.allRecipes;
                     this.lastPage = response.data.recipes.last_page;
-                    console.log(response.data.last_page);
                 } catch (error) {
                     console.error('Error fetching recipes', error);
                 } finally {

@@ -1,21 +1,21 @@
 <template>
     <div class="p-5 flex flex-col">
         <div class="md:flex gap-5">
-            <div class="w-40 h-40 mx-auto rounded-full border-2 shrink-0">
+            <div class="w-40 h-40 mx-auto md:mx-0 rounded-full border-2 shrink-0 ">
                 <img
                     class="rounded-full self-start w-full h-full object-cover"
                     src="/public/images/logo.png"
                     alt="Profile photo"
                 >
             </div>
-            <div class="">
+            <div>
                 <p
                     v-if="profile"
                     class="font-semibold text-lg text-gray-800 mb-2"
                 >
                     {{ `${profile.firstname} ${profile.lastname}` }}
                 </p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis illum dolores culpa quis in unde quae cum aspernatur, molestias nulla nam voluptatem, eius iusto. Modi iure aperiam dicta quam magni!</p>
+                <p> Hi! Cooking is my hobby. I love cooking and I experiment recipes almost everyday! Hope you like my recipes! </p>
             </div>
 
         </div>

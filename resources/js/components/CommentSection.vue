@@ -99,7 +99,7 @@ import CommentItem from './CommentItem.vue';
         },
         watch: {
             comments(newVal) {
-                console.log(newVal);
+
             }
         }
 

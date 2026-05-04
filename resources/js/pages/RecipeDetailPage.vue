@@ -79,7 +79,6 @@ export default {
 
                 try {
                     const response = await axios.get(`/api/recipes/${id}-${slug}`);
-                    console.log(response);
 
                     this.isFavorited = response.data.isFavorited;
                     this.recipe = response.data.recipe;
@@ -159,7 +158,7 @@ export default {
                             this.user.reactions.splice(existingReactionIndex, 1);
                         }
                     } else {
-                        // User added or changed reaction
+                        // user added or changed reaction
                         if (existingReactionIndex !== -1) {
                             this.user.reactions[existingReactionIndex].reaction_type = reactionType;
                         } else {
@@ -208,16 +207,14 @@ export default {
             async toggleFavorite(recipeId) {
 
                 if (!this.isLoggedIn) {
-                    this.toast.error('Login to save your favorite recipes!');
+                    this.toast.error('Login to save your favorite recipes');
                     return;
                 }
 
                 try {
                    const response = await axios.post(`/api/favorites/${recipeId}`, {withCredentials: true});
-                    console.log(response);
                    this.isFavorited = response.data.isFavorited;
 
-                   console.log('Favorited');
                 } catch (error) {
                     console.error('Error adding favorites: ', error);
                 }
