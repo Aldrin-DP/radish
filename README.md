@@ -96,6 +96,7 @@ Before you begin, ensure you have the following installed:
 ## Author
 **Aldrin Pelayo**
 - GitHub: [@Aldrin-DP](https://github.com/Aldrin-DP)
+- Portfolio: [https://adpelayo.netlify.app](https://adpelayo.netlify.app)
 
-## Credits
+## Acknowledgment
 Recipe content (images, ingredients and instructions) used for demo purposes are sourced from [Eatwell101](https://www.eatwell101.com/)
